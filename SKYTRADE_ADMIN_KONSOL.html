@@ -1202,6 +1202,8 @@ async function jfxClose(id){
       <button class="log-fbtn" data-lvl="INFO">INFO</button>
       <button class="log-fbtn" data-lvl="WARN">WARN</button>
       <button class="log-fbtn" data-lvl="ERROR">ERROR</button>
+      <button class="log-act" id="jfxLogCopy" style="background:#0b2436;border:1px solid #245a7a;color:#8fd3f0;border-radius:8px;padding:6px 12px;font:700 12px system-ui;cursor:pointer">📋 Copy</button>
+      <button class="log-act" id="jfxLogDl" style="background:#0b2436;border:1px solid #245a7a;color:#8fd3f0;border-radius:8px;padding:6px 12px;font:700 12px system-ui;cursor:pointer">⬇️ Download</button>
       <label style="display:flex;align-items:center;gap:5px;color:#9adbb7;font:600 12px system-ui;margin-left:auto"><input type="checkbox" id="jfxLogAuto"> auto 15s</label>
     </div>
     <div class="log-list" id="jfxLogList"><div class="log-empty">Tekan ⟳ untuk memuat log.</div></div>
@@ -1549,6 +1551,41 @@ async function jfxClose(id){
       .then(function(){ _logRows=[]; renderLogs(); })
       .catch(function(){ alert('Gagal menghapus log'); });
   }
+  function _logFiltered(){
+    return _logRows.filter(function(r){ return _logLevel==='ALL' || String(r.level||'INFO').toUpperCase()===_logLevel; });
+  }
+  function _logPlain(){
+    var rows=_logFiltered();
+    var lines=[];
+    lines.push('SKYTRADE Robot Log — '+(_logLevel==='ALL'?'SEMUA':_logLevel)+' — '+new Date().toLocaleString('id-ID')+' — '+rows.length+' baris');
+    lines.push('----------------------------------------');
+    for(var i=0;i<rows.length;i++){ var r=rows[i]; lines.push('['+_logTime(r.ts)+'] '+String(r.level||'INFO').toUpperCase()+'  '+(r.msg||'')); }
+    return lines.join('\n');
+  }
+  function copyLogs(btn){
+    var rows=_logFiltered();
+    if(!rows.length){ alert('Tidak ada log untuk disalin.'); return; }
+    var txt=_logPlain();
+    function done(ok){ if(btn){ var o=btn.textContent; btn.textContent=ok?'✓ Tersalin':'✗ Gagal'; setTimeout(function(){ btn.textContent=o; },1500); } if(!ok){ try{ window.prompt('Salin manual (tekan lama → Copy):', txt); }catch(e){} } }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){ done(true); }).catch(function(){ done(false); });
+    } else {
+      try{ var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.left='-9999px'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done(true); }catch(e){ done(false); }
+    }
+  }
+  function downloadLogs(){
+    var rows=_logFiltered();
+    if(!rows.length){ alert('Tidak ada log untuk diunduh.'); return; }
+    var txt=_logPlain();
+    var d=new Date(), pad=function(n){return (n<10?'0':'')+n;};
+    var name='skytrade-log-'+(_logLevel==='ALL'?'semua':_logLevel.toLowerCase())+'-'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'-'+pad(d.getHours())+pad(d.getMinutes())+'.txt';
+    try{
+      var blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement('a'); a.href=url; a.download=name; document.body.appendChild(a); a.click();
+      setTimeout(function(){ try{document.body.removeChild(a);}catch(e){} URL.revokeObjectURL(url); },1200);
+    }catch(e){ alert('Gagal mengunduh. Pakai tombol Copy aja ya.'); }
+  }
   (function wireLog(){
     var openB=document.getElementById('jfxAdmLog'), backB=document.getElementById('jfxLogBack'),
         refB=document.getElementById('jfxLogRefresh'), clrB=document.getElementById('jfxLogClear'),
@@ -1557,6 +1594,9 @@ async function jfxClose(id){
     if(backB) backB.onclick=closeLog;
     if(refB) refB.onclick=loadLogs;
     if(clrB) clrB.onclick=clearLogs;
+    var copyB=document.getElementById('jfxLogCopy'), dlB=document.getElementById('jfxLogDl');
+    if(copyB) copyB.onclick=function(){ copyLogs(copyB); };
+    if(dlB) dlB.onclick=downloadLogs;
     if(auto) auto.onchange=function(){ if(auto.checked){ _logTimer=setInterval(loadLogs,15000); } else if(_logTimer){ clearInterval(_logTimer); _logTimer=null; } };
     for(var i=0;i<filt.length;i++){ (function(b){ b.onclick=function(){ _logLevel=b.getAttribute('data-lvl'); for(var k=0;k<filt.length;k++) filt[k].classList.toggle('on',filt[k]===b); renderLogs(); }; })(filt[i]); }
   })();
