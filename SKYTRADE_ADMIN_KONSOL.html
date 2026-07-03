@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0f1a">
+<script>
+(function(){var K="";try{K=sessionStorage.getItem('jfx_admin_key')||"";}catch(e){}window.__JFX_KEY=K;if(!K){document.documentElement.setAttribute('data-locked','1');}})();
+</script>
+<style>
+html[data-locked="1"] body > *:not(#jfxLogin){display:none !important}
+#jfxLogin{position:fixed;inset:0;z-index:2147483000;display:none;align-items:center;justify-content:center;padding:22px;background:radial-gradient(1000px 500px at 80% -10%,rgba(124,92,255,.20),transparent),radial-gradient(800px 460px at -10% 10%,rgba(34,211,238,.12),transparent),#0b0f1a}
+html[data-locked="1"] #jfxLogin{display:flex}
+.jfxlg-card{width:100%;max-width:360px;background:linear-gradient(180deg,#161d2e,#121826);border:1px solid #27314a;border-radius:16px;padding:26px 22px;box-shadow:0 8px 30px rgba(0,0,0,.45);text-align:center}
+.jfxlg-logo{width:56px;height:56px;border-radius:15px;margin:0 auto 14px;background:linear-gradient(135deg,#7c5cff,#22d3ee);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:#fff}
+.jfxlg-card h1{font-size:18px;color:#e8edf7;margin-bottom:4px}
+.jfxlg-card p.sub{font-size:12px;color:#94a3b8;margin-bottom:20px}
+.jfxlg-card input{width:100%;background:#0b0f1a;border:1px solid #27314a;border-radius:10px;padding:13px 14px;color:#e8edf7;font-size:15px;margin-bottom:12px;outline:none}
+.jfxlg-card input:focus{border-color:#7c5cff}
+.jfxlg-btn{width:100%;background:linear-gradient(135deg,#7c5cff,#22d3ee);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer}
+.jfxlg-btn:disabled{opacity:.6;cursor:default}
+.jfxlg-status{min-height:18px;margin-top:14px;font-size:13px;color:#94a3b8}
+.jfxlg-status.err{color:#f6465d}
+.jfxlg-status.ok{color:#16c784}
+</style>
+<title>SKYTRADE — automate trade for living</title>
+<style>
+:root{
+  --bg:#0b0f1a; --bg2:#121826; --card:#161d2e; --card2:#1c2438;
+  --line:#27314a; --txt:#e8edf7; --mut:#94a3b8; --mut2:#64748b;
+  --buy:#16c784; --sell:# f6465d; --sell:#f6465d; --warn:#f0b90b; --info:#3b82f6;
+  --accent:#7c5cff; --accent2:#22d3ee;
+  --radius:16px; --shadow:0 8px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{background:radial-gradient(1200px 600px at 80% -10%,rgba(124,92,255,.18),transparent),radial-gradient(900px 500px at -10% 10%,rgba(34,211,238,.10),transparent),var(--bg);min-height:100vh;padding:18px;}
+.wrap{max-width:760px;margin:0 auto}
+header.top{display:flex;align-items:center;gap:12px;margin:6px 2px 18px}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;box-shadow:var(--shadow)}
+.brand h1{font-size:18px;letter-spacing:.3px}
+.brand p{font-size:12px;color:var(--mut)}
+.pill{margin-left:auto;font-size:11px;color:var(--mut);background:var(--card);border:1px solid var(--line);padding:6px 10px;border-radius:999px;display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--mut2);box-shadow:0 0 0 0 rgba(22,199,132,.6)}
+.dot.live{background:var(--buy);animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(22,199,132,.5)}70%{box-shadow:0 0 0 8px rgba(22,199,132,0)}100%{box-shadow:0 0 0 0 rgba(22,199,132,0)}}
+.card{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-bottom:16px}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin-bottom:14px;font-weight:700}
+label{display:block;font-size:12px;color:var(--mut);margin:0 0 8px 2px;font-weight:600}
+.pairs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:560px){.pairs{grid-template-columns:repeat(4,1fr)}}
+.pair{cursor:pointer;border:1px solid var(--line);background:var(--card2);border-radius:12px;padding:12px 8px;text-align:center;transition:.15s;position:relative}
+.pair:hover{border-color:var(--accent)}
+.pair.active{border-color:var(--accent);background:linear-gradient(180deg,rgba(124,92,255,.25),rgba(124,92,255,.05));box-shadow:0 0 0 1px var(--accent) inset}
+.pair .sym{font-weight:800;font-size:14px}
+.pair .mk{font-size:10px;color:var(--mut);margin-top:3px}
+.pair .flag{font-size:18px}
+.row{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+@media(min-width:560px){.row.two{grid-template-columns:1fr 1fr}}
+.field{position:relative}
+.inp{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:12px;color:var(--txt);padding:13px 14px;font-size:15px;outline:none;transition:.15s}
+.inp:focus{border-color:var(--accent)}
+.inp::placeholder{color:var(--mut2)}
+.prefix{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--mut);font-size:13px;font-weight:600}
+select.inp{appearance:none;-webkit-appearance:none}
+.btn{width:100%;border:none;border-radius:13px;padding:16px;font-size:16px;font-weight:800;letter-spacing:.4px;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--accent),#5b8cff);box-shadow:0 10px 26px rgba(124,92,255,.4);transition:.15s;margin-top:18px;display:flex;align-items:center;justify-content:center;gap:10px}
+.btn:hover{filter:brightness(1.07)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.spin{width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:rot .7s linear infinite;display:none}
+@keyframes rot{to{transform:rotate(360deg)}}
+.hint{font-size:11px;color:var(--mut2);margin-top:10px;line-height:1.5}
+.adv{font-size:12px;color:var(--accent2);cursor:pointer;margin-top:12px;display:inline-block}
+.advbox{display:none;margin-top:12px}
+.advbox.open{display:block}
+/* RESULT */
+#result{display:none}
+.verdict{border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid var(--line);text-align:center}
+.verdict.buy{background:linear-gradient(180deg,rgba(22,199,132,.20),rgba(22,199,132,.04));border-color:rgba(22,199,132,.5)}
+.verdict.sell{background:linear-gradient(180deg,rgba(246,70,93,.20),rgba(246,70,93,.04));border-color:rgba(246,70,93,.5)}
+.verdict.wait{background:linear-gradient(180deg,rgba(240,185,11,.16),rgba(240,185,11,.03));border-color:rgba(240,185,11,.45)}
+.verdict .dir{font-size:30px;font-weight:900;letter-spacing:1px}
+.verdict.buy .dir{color:var(--buy)} .verdict.sell .dir{color:var(--sell)} .verdict.wait .dir{color:var(--warn)}
+.verdict .sub{font-size:13px;color:var(--mut);margin-top:4px}
+.conf{margin-top:12px}
+.conf .track{height:9px;background:var(--card2);border-radius:999px;overflow:hidden}
+.conf .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--warn),var(--buy));transition:width .8s ease}
+.conf .lab{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat .k{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.stat .v{font-size:18px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums}
+.stat.buy .v{color:var(--buy)} .stat.sell .v{color:var(--sell)} .stat.warn .v{color:var(--warn)} .stat.info .v{color:var(--accent2)}
+.levels{margin-top:12px}
+.lvl{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;border:1px solid var(--line);border-radius:11px;margin-bottom:8px;background:var(--card2);font-variant-numeric:tabular-nums}
+.lvl .name{font-size:12px;color:var(--mut);display:flex;align-items:center;gap:8px}
+.lvl .tag{width:9px;height:9px;border-radius:50%}
+.lvl .price{font-weight:800;font-size:15px}
+.tEntry .tag{background:var(--info)} .tSL .tag{background:var(--sell)} .tTP1 .tag{background:var(--buy)} .tTP2 .tag{background:#0fae6e}
+.check{list-style:none;margin-top:6px}
+.check li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px;color:var(--txt)}
+.check li:last-child{border-bottom:none}
+.ic{width:20px;height:20px;border-radius:6px;flex:none;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.ic.ok{background:rgba(22,199,132,.18);color:var(--buy)} .ic.no{background:rgba(246,70,93,.18);color:var(--sell)} .ic.mid{background:rgba(240,185,11,.18);color:var(--warn)}
+.check li .txt small{display:block;color:var(--mut);font-size:11px;margin-top:2px}
+.session{display:flex;align-items:center;gap:12px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:10px}
+.session .clock{font-size:24px}
+.session .info b{font-size:14px} .session .info small{display:block;color:var(--mut);font-size:11.5px;margin-top:2px}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+.badge.live{color:var(--buy);border-color:rgba(22,199,132,.4)}
+.badge.sim{color:var(--warn);border-color:rgba(240,185,11,.4)}
+.warnbox{font-size:12px;line-height:1.6;color:var(--warn);background:rgba(240,185,11,.08);border:1px solid rgba(240,185,11,.3);border-radius:11px;padding:11px 13px;margin-top:12px}
+.disc{font-size:11px;color:var(--mut2);line-height:1.6;text-align:center;margin:18px 4px 8px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.btn2{background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:11px;padding:12px;font-size:13px;font-weight:700;cursor:pointer}
+.btn2:hover{border-color:var(--accent)}
+footer{text-align:center;font-size:11px;color:var(--mut2);padding:10px 0 4px}
+.tnote{font-size:11px;color:var(--mut2);margin-top:8px}
+.fade{animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.chartwrap{position:relative;width:100%;height:300px;background:var(--card2);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+canvas#chart{width:100%;height:100%;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:11px;color:var(--mut)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+.explain{font-size:13.5px;line-height:1.7;color:var(--txt)}
+.explain h4{font-size:12.5px;margin:16px 0 6px;color:var(--accent2);text-transform:uppercase;letter-spacing:.5px}
+.explain h4:first-child{margin-top:0}
+.explain p{margin:0 0 10px;color:#cdd6ea}
+.explain ul{margin:0 0 10px 18px;color:#cdd6ea}
+.explain li{margin:4px 0}
+.explain .em{color:var(--txt);font-weight:700}
+.explain .mono{font-variant-numeric:tabular-nums;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:block}
+
+
+.fresh{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.fresh .chip{font-size:11px;color:var(--mut);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:5px 10px;display:flex;align-items:center;gap:6px}
+.fresh .chip b{color:var(--txt);font-variant-numeric:tabular-nums}
+.fresh .chip.price b{color:var(--accent2)}
+
+</style>
+</head>
+<body>
+<div id="jfxVerBadge" style="position:fixed;left:6px;bottom:6px;z-index:2147483647;font:700 11px monospace;color:#7CFC00;background:rgba(0,0,0,.55);padding:2px 6px;border-radius:6px;pointer-events:none">MASTER v40</div>
+<div class="wrap">
+  <header class="top">
+    <div class="logo">S</div>
+    <div class="brand">
+      <h1>SKYTRADE</h1>
+      <p>automate trade for living · ICT / SMC</p>
+    </div>
+    <div class="pill"><span class="dot" id="liveDot"></span><span id="liveTxt">idle</span></div>
+  </header>
+
+  <!-- INPUT CARD -->
+  <section class="card">
+    <h2>1 · Pilih Pair</h2>
+    <div class="pairs" id="pairs"></div>
+
+    <div class="row two">
+      <div class="field">
+        <label>Modal yang diresikokan (Equity)</label>
+        <input class="inp" id="capital" type="number" min="50" step="10" value="100" placeholder="100">
+        <span class="prefix">USD</span>
+      </div>
+      <div class="field">
+        <label>Risk per trade</label>
+        <select class="inp" id="riskPct">
+          <option value="0.5">0.5% (disarankan)</option>
+          <option value="1">1% (maksimal)</option>
+          <option value="0.25">0.25% (ultra konservatif)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="adv" id="advToggle">⚙️ Pengaturan data real-time (opsional) ▾</div>
+    <div class="advbox" id="advBox">
+      <div class="row">
+        <div class="field">
+          <label>Twelve Data API Key — untuk harga &amp; candle REAL-TIME (gratis di twelvedata.com)</label>
+          <input class="inp" id="apiKey" type="text" value="c2e940f7835346399c7cfea5ab4158ce" placeholder="Tempel API key di sini lalu Generate">
+        </div>
+      </div>
+      <p class="hint">Tanpa API key, aplikasi berjalan dalam <b>Mode Simulasi</b> (data sintetis) supaya kamu bisa melihat cara kerja mesin analisanya. Dengan API key gratis, harga &amp; candle menjadi <b>real-time</b> dari market sungguhan.</p>
+    </div>
+
+    <button class="btn" id="genBtn"><span class="spin" id="spin"></span><span id="btnTxt">⚡ GENERATE SIGNAL</span></button>
+    <p class="hint">Mesin akan menjalankan: <b>HTF Bias (D1 &amp; H4)</b> → <b>Filter Kondisi Market (ADX)</b> → <b>Order Block + FVG + Liquidity Sweep</b> → <b>Konfirmasi entry M15</b> → <b>Position sizing &amp; rencana TP/SL</b>.</p>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result">
+    <div class="card fade">
+      <h2 style="display:flex;justify-content:space-between;align-items:center">
+        <span>Kesimpulan · <span id="resPair"></span></span>
+        <span class="badge" id="dataBadge"></span>
+      </h2>
+      <div class="verdict wait" id="verdict">
+        <div class="dir" id="vDir">MENUNGGU</div>
+        <div class="sub" id="vSub"></div>
+        <div class="conf">
+          <div class="lab"><span>Confidence Score</span><span id="confTxt">0%</span></div>
+          <div class="track"><div class="fill" id="confFill" style="width:0"></div></div>
+        </div>
+      </div>
+      <div class="fresh" id="freshBox"></div>
+
+      <div class="session" id="sessionBox">
+        <div class="clock">🕒</div>
+        <div class="info">
+          <b id="sessName"></b>
+          <small id="sessTime"></small>
+        </div>
+      </div>
+
+      <div class="levels" id="levels"></div>
+
+      <div class="grid2" style="margin-top:12px">
+        <div class="stat info"><div class="k">Lot Size</div><div class="v" id="sLot">–</div></div>
+        <div class="stat warn"><div class="k">Risk / Reward</div><div class="v" id="sRR">–</div></div>
+        <div class="stat sell"><div class="k">Risiko ($)</div><div class="v" id="sRisk">–</div></div>
+        <div class="stat buy"><div class="k">Potensi Profit ($)</div><div class="v" id="sProfit">–</div></div>
+      </div>
+
+      <div id="warnArea"></div>
+
+      <div class="actions">
+        <button class="btn2" id="copyBtn">📋 Salin Sinyal</button>
+        <button class="btn2" id="reBtn">🔄 Refresh</button>
+        <button class="btn2" id="sendBtn">📡 Kirim ke Backend</button>
+      </div>
+    </div>
+
+    <div class="card fade">
+      <h2>Chart M15 + Zona Setup</h2>
+      <div class="chartwrap"><canvas id="chart"></canvas></div>
+      <div class="legend">
+        <span><i style="background:#3b82f6"></i>Entry</span>
+        <span><i style="background:#f6465d"></i>Stop Loss</span>
+        <span><i style="background:#16c784"></i>TP1</span>
+        <span><i style="background:#0fae6e"></i>TP2</span>
+        <span><i style="background:#94a3b8;width:14px;height:10px;opacity:.4"></i>Zona Order Block</span>
+      </div>
+    </div>
+    <div class="card fade">
+      <h2>Penjelasan Lengkap Keputusan</h2>
+      <div class="explain" id="explain"></div>
+    </div>
+    <div class="card fade">
+      <h2>Confluence Checklist</h2>
+      <ul class="check" id="checklist"></ul>
+    </div>
+
+    <div class="card fade">
+      <h2>Higher Timeframe Bias &amp; Kondisi Market</h2>
+      <div class="grid2">
+        <div class="stat" id="biasD"><div class="k">Bias Daily (D1)</div><div class="v">–</div></div>
+        <div class="stat" id="biasH4"><div class="k">Bias H4</div><div class="v">–</div></div>
+        <div class="stat" id="adxBox"><div class="k">ADX (kekuatan trend)</div><div class="v">–</div></div>
+        <div class="stat" id="atrBox"><div class="k">ATR (volatilitas)</div><div class="v">–</div></div>
+      </div>
+      <p class="tnote" id="engineNote"></p>
+    </div>
+  </section>
+
+  <p class="disc">⚠️ <b>Disclaimer:</b> Alat bantu keputusan berbasis analisa teknikal (ICT/SMC). BUKAN jaminan profit, BUKAN nasihat keuangan. Mode <b>Auto Trade</b> mengeksekusi order langsung ke akun broker kamu — wajib pakai akun <b>DEMO</b> dulu. Trading forex/CFD berisiko tinggi dan dapat menyebabkan kerugian melebihi modal. Selalu konfirmasi manual &amp; gunakan akun demo dulu.</p>
+  <footer>SKYTRADE · automate trade for living</footer>
+</div>
+
+<script>
+/* ============================================================
+   J-FX-SignalPRO — Smart Money Signal Engine
+   Pure client-side. Real-time via Twelve Data API (optional).
+   Falls back to deterministic simulation when no API key.
+============================================================ */
+const PAIRS = [
+  {id:"EUR/USD", sym:"EUR/USD", mk:"Eropa",  flag:"🇪🇺", pip:0.0001, pipUSDperLot:10,  digits:5, sessions:["London","NY"]},
+  {id:"GBP/USD", sym:"GBP/USD", mk:"London", flag:"🇬🇧", pip:0.0001, pipUSDperLot:10,  digits:5, sessions:["London","NY"]},
+  {id:"USD/JPY", sym:"USD/JPY", mk:"Asia",   flag:"🇯🇵", pip:0.01,   pipUSDperLot:9.1, digits:3, sessions:["Asia","London"]},
+  {id:"XAU/USD", sym:"XAU/USD", mk:"Gold",   flag:"🥇", pip:0.1,    pipUSDperLot:1,   digits:2, sessions:["London","NY"]},
+];
+let selected = "EUR/USD";
+
+// ---------- UI build ----------
+const pairsEl = document.getElementById("pairs");
+PAIRS.forEach(p=>{
+  const d=document.createElement("div");
+  d.className="pair"+(p.id===selected?" active":"");
+  d.dataset.id=p.id;
+  d.innerHTML=`<div class="flag">${p.flag}</div><div class="sym">${p.sym}</div><div class="mk">${p.mk} Market</div>`;
+  d.onclick=()=>{selected=p.id;document.querySelectorAll(".pair").forEach(x=>x.classList.toggle("active",x.dataset.id===p.id));};
+  pairsEl.appendChild(d);
+});
+document.getElementById("advToggle").onclick=function(){document.getElementById("advBox").classList.toggle("open");};
+
+// ---------- Indicators ----------
+function ema(vals,period){const k=2/(period+1);let e=vals[0];const out=[e];for(let i=1;i<vals.length;i++){e=vals[i]*k+e*(1-k);out.push(e);}return out;}
+function sma(vals,period){const out=[];for(let i=0;i<vals.length;i++){if(i<period-1){out.push(null);continue;}let s=0;for(let j=i-period+1;j<=i;j++)s+=vals[j];out.push(s/period);}return out;}
+function atr(c,period){const tr=[];for(let i=0;i<c.length;i++){if(i===0){tr.push(c[i].high-c[i].low);continue;}const h=c[i].high,l=c[i].low,pc=c[i-1].close;tr.push(Math.max(h-l,Math.abs(h-pc),Math.abs(l-pc)));}
+  // Wilder smoothing
+  let a=tr.slice(0,period).reduce((x,y)=>x+y,0)/period;for(let i=period;i<tr.length;i++){a=(a*(period-1)+tr[i])/period;}return a;}
+function adx(c,period){
+  if(c.length<period*2)return 20;
+  let plusDM=[],minusDM=[],tr=[];
+  for(let i=1;i<c.length;i++){
+    const up=c[i].high-c[i-1].high, dn=c[i-1].low-c[i].low;
+    plusDM.push(up>dn&&up>0?up:0);
+    minusDM.push(dn>up&&dn>0?dn:0);
+    const h=c[i].high,l=c[i].low,pc=c[i-1].close;
+    tr.push(Math.max(h-l,Math.abs(h-pc),Math.abs(l-pc)));
+  }
+  function wilder(arr){let s=arr.slice(0,period).reduce((x,y)=>x+y,0);const out=[s];for(let i=period;i<arr.length;i++){s=s-(s/period)+arr[i];out.push(s);}return out;}
+  const trS=wilder(tr),pS=wilder(plusDM),mS=wilder(minusDM);
+  const dx=[];
+  for(let i=0;i<trS.length;i++){const pdi=100*pS[i]/trS[i],mdi=100*mS[i]/trS[i];const d=100*Math.abs(pdi-mdi)/(pdi+mdi||1);dx.push(d);}
+  if(dx.length<period)return dx[dx.length-1]||20;
+  let a=dx.slice(0,period).reduce((x,y)=>x+y,0)/period;for(let i=period;i<dx.length;i++){a=(a*(period-1)+dx[i])/period;}return a;
+}
+function swings(c,lb){const sh=[],sl=[];for(let i=lb;i<c.length-lb;i++){let hi=true,lo=true;for(let j=i-lb;j<=i+lb;j++){if(c[j].high>c[i].high)hi=false;if(c[j].low<c[i].low)lo=false;}if(hi)sh.push({i,p:c[i].high});if(lo)sl.push({i,p:c[i].low});}return{sh,sl};}
+
+// ---------- Bias ----------
+function biasOf(c){
+  const closes=c.map(x=>x.close);
+  const e20=ema(closes,20),e50=ema(closes,50);
+  const last=closes.length-1;
+  let score=0;
+  if(e20[last]>e50[last])score+=1;else score-=1;
+  if(closes[last]>e50[last])score+=1;else score-=1;
+  // structure: compare last two swing highs/lows
+  const {sh,sl}=swings(c,2);
+  if(sh.length>=2){score += sh[sh.length-1].p>sh[sh.length-2].p?1:-1;}
+  if(sl.length>=2){score += sl[sl.length-1].p>sl[sl.length-2].p?1:-1;}
+  let dir = score>=2?"BULLISH":score<=-2?"BEARISH":"NEUTRAL";
+  return {dir,score};
+}
+
+// ---------- Order Block + FVG + Liquidity Sweep (execution TF) ----------
+function findSetup(c,dir,A){
+  // look in recent window
+  const n=c.length, win=Math.min(60,n-3);
+  let ob=null, fvg=null, sweep=false;
+  // Bullish: down candle before strong up displacement
+  for(let i=n-3;i>=n-win;i--){
+    const body=Math.abs(c[i].close-c[i].open);
+    const nextBody=c[i+1].close-c[i+1].open;
+    if(dir==="BULLISH" && c[i].close<c[i].open && nextBody>0 && nextBody>body*1.2 && (c[i+1].close-c[i+1].open)>A*0.6){
+      ob={top:Math.max(c[i].open,c[i].close),bottom:c[i].low,i};break;
+    }
+    if(dir==="BEARISH" && c[i].close>c[i].open && nextBody<0 && Math.abs(nextBody)>body*1.2 && Math.abs(c[i+1].close-c[i+1].open)>A*0.6){
+      ob={top:c[i].high,bottom:Math.min(c[i].open,c[i].close),i};break;
+    }
+  }
+  // FVG (3-candle imbalance) near recent
+  for(let i=n-2;i>=n-win;i--){
+    if(dir==="BULLISH" && c[i].low>c[i-2].high){fvg={from:c[i-2].high,to:c[i].low,i};break;}
+    if(dir==="BEARISH" && c[i].high<c[i-2].low){fvg={from:c[i].high,to:c[i-2].low,i};break;}
+  }
+  // Liquidity sweep: recent candle wicks beyond prior swing then closes back
+  const {sh,sl}=swings(c.slice(0,n-1),2);
+  const lastC=c[n-1];
+  if(dir==="BULLISH" && sl.length){const ref=sl[sl.length-1].p;if(lastC.low<ref && lastC.close>ref)sweep=true;}
+  if(dir==="BEARISH" && sh.length){const ref=sh[sh.length-1].p;if(lastC.high>ref && lastC.close<ref)sweep=true;}
+  // confirmation candle on last closed bar
+  const conf = dir==="BULLISH" ? (lastC.close>lastC.open) : (lastC.close<lastC.open);
+  return {ob,fvg,sweep,conf};
+}
+
+// ---------- Sessions / kill zones (WIB UTC+7) ----------
+function nextSession(pair){
+  // kill zones in WIB hours
+  const zones={London:{s:14,e:18,label:"London Kill Zone"}, NY:{s:19,e:23,label:"New York Kill Zone"}, Asia:{s:6,e:9,label:"Asia (Tokyo) Kill Zone"}};
+  const order=PAIRS.find(p=>p.id===pair).sessions;
+  const now=new Date(); const h=now.getHours()+now.getMinutes()/60;
+  // active?
+  for(const z of order){const Z=zones[z];if(h>=Z.s&&h<Z.e)return{active:true,label:Z.label,from:Z.s,to:Z.e};}
+  // next upcoming today or tomorrow
+  let best=null;
+  for(const z of order){const Z=zones[z];let diff=Z.s-h;if(diff<0)diff+=24;if(!best||diff<best.diff)best={diff,Z};}
+  return{active:false,label:best.Z.label,from:best.Z.s,to:best.Z.e,diff:best.diff};
+}
+function fmtHour(h){const hh=String(Math.floor(h)%24).padStart(2,"0");return hh+":00";}
+
+// ---------- Data: real (Twelve Data) or simulated ----------
+async function fetchTD(symbol,interval,size,key){
+  const url="ht"+"tps://api.twelved"+"ata.com/time_series?symbol="+encodeURIComponent(symbol)+"&interval="+interval+"&outputsize="+size+"&apikey="+key;
+  const r=await fetch(url);const j=await r.json();
+  if(j.status==="error"||!j.values)throw new Error(j.message||"API error");
+  return j.values.map(v=>({time:v.datetime,open:+v.open,high:+v.high,low:+v.low,close:+v.close})).reverse();
+}
+function simulate(pair,interval){
+  // deterministic-ish synthetic candles with a trend + noise
+  const cfg=PAIRS.find(p=>p.id===pair);
+  const base={"EUR/USD":1.0850,"GBP/USD":1.2710,"USD/JPY":156.30,"XAU/USD":2335.0}[pair];
+  const vol={"EUR/USD":0.0006,"GBP/USD":0.0008,"USD/JPY":0.18,"XAU/USD":4.5}[pair];
+  const seed=(pair.length*7+interval.length*13+new Date().getHours())%97;
+  let rnd=seed/97; const rng=()=>{rnd=(rnd*9301+49297)%233280/233280;return rnd;};
+  const trend=(rng()-0.45)* (interval==="1day"?vol*3:vol);
+  const c=[];let price=base;const N=120;
+  for(let i=0;i<N;i++){
+    const drift=trend+(rng()-0.5)*vol*2;
+    const o=price;const cl=o+drift;const hi=Math.max(o,cl)+rng()*vol;const lo=Math.min(o,cl)-rng()*vol;
+    c.push({time:i,open:o,high:hi,low:lo,close:cl});price=cl;
+  }
+  return c;
+}
+async function getData(pair,key){
+  if(key){
+    const [d1,h4,m15]=await Promise.all([
+      fetchTD(pair,"1day",120,key),
+      fetchTD(pair,"4h",120,key),
+      fetchTD(pair,"15min",150,key),
+    ]);
+    return {d1,h4,m15,live:true};
+  }
+  return {d1:simulate(pair,"1day"),h4:simulate(pair,"4h"),m15:simulate(pair,"15min"),live:false};
+}
+
+// ---------- Main analysis ----------
+async function generate(){
+  const btn=document.getElementById("genBtn"),spin=document.getElementById("spin"),bt=document.getElementById("btnTxt");
+  const capital=Math.max(0,+document.getElementById("capital").value||0);
+  const riskPct=+document.getElementById("riskPct").value;
+  const key=document.getElementById("apiKey").value.trim();
+  if(capital<50){alert("Modal minimal $50.");return;}
+  btn.disabled=true;spin.style.display="inline-block";bt.textContent="Menganalisa market…";
+  document.getElementById("liveDot").className="dot live";document.getElementById("liveTxt").textContent="analyzing";
+  const cfg=PAIRS.find(p=>p.id===selected);
+  try{
+    const data=await getData(selected,key);
+    await new Promise(r=>setTimeout(r,400));
+    const bD=biasOf(data.d1), bH=biasOf(data.h4);
+    const A=atr(data.m15,14), adxV=adx(data.m15,14), adxH4=adx(data.h4,14);
+    const price=data.m15[data.m15.length-1].close;
+
+    // agreed bias
+    let dir="NEUTRAL";
+    if(bD.dir===bH.dir && bD.dir!=="NEUTRAL")dir=bD.dir;
+    else if(bH.dir!=="NEUTRAL")dir=bH.dir;
+
+    const trending = adxV>=20 || adxH4>=22;
+    const setup = dir!=="NEUTRAL" ? findSetup(data.m15,dir,A) : {ob:null,fvg:null,sweep:false,conf:false};
+
+    // confluence scoring
+    const checks=[
+      {k:"HTF Bias selaras (D1 & H4)", ok: bD.dir===bH.dir && dir!=="NEUTRAL", mid: dir!=="NEUTRAL", note:`D1 ${bD.dir} · H4 ${bH.dir}`},
+      {k:"Market trending (bukan ranging)", ok: trending, note:`ADX M15 ${adxV.toFixed(1)} · H4 ${adxH4.toFixed(1)} (butuh ≥20)`},
+      {k:"Order Block teridentifikasi", ok: !!setup.ob, note: setup.ob?"Harga retest zona OB":"Belum ada OB valid"},
+      {k:"Fair Value Gap (FVG / imbalance)", ok: !!setup.fvg, note: setup.fvg?"Imbalance searah bias":"Tidak ada FVG searah"},
+      {k:"Liquidity Sweep / grab", ok: setup.sweep, note: setup.sweep?"Likuiditas tersapu lalu reversal":"Belum ada sweep"},
+      {k:"Confirmation candle (M15)", ok: setup.conf, note: setup.conf?"Candle konfirmasi searah":"Menunggu candle konfirmasi"},
+    ];
+    let pts=checks.reduce((s,c)=>s+(c.ok?1:(c.mid?0.4:0)),0);
+    let confidence=Math.round((pts/checks.length)*100);
+
+    // decision
+    let action="WAIT";
+    const strong = checks[0].ok && checks[1].ok && setup.ob && (setup.fvg||setup.sweep) && setup.conf;
+    if(strong && confidence>=70) action=dir==="BULLISH"?"BUY":"SELL";
+    else if(dir!=="NEUTRAL" && setup.ob && confidence>=55) action="WATCH"; // setup forming
+
+    // levels
+    let entry,sl,tp1,tp2;
+    const buffer=A*0.5;
+    if(dir==="BULLISH"){
+      entry = setup.ob? setup.ob.top : price;
+      sl = (setup.ob? setup.ob.bottom : price - A*1.5) - buffer;
+      const risk=entry-sl; tp1=entry+risk*2; tp2=entry+risk*4;
+    }else if(dir==="BEARISH"){
+      entry = setup.ob? setup.ob.bottom : price;
+      sl = (setup.ob? setup.ob.top : price + A*1.5) + buffer;
+      const risk=sl-entry; tp1=entry-risk*2; tp2=entry-risk*4;
+    }else{entry=price;sl=price-A*1.5;tp1=price+A*3;tp2=price+A*6;}
+
+    const slDist=Math.abs(entry-sl);
+    const slPips=slDist/cfg.pip;
+    const riskAmt=capital*riskPct/100;
+    let lots = riskAmt/(slPips*cfg.pipUSDperLot);
+    lots = Math.max(0, lots);
+    const rr=2.0;
+    const profit=riskAmt*rr; // to TP1
+
+    render({cfg,data,bD,bH,adxV,adxH4,A,dir,action,confidence,checks,entry,sl,tp1,tp2,slPips,riskAmt,profit,lots,capital,riskPct,setup});
+  }catch(e){
+    alert("Gagal ambil data real-time: "+e.message+"\n\nMencoba mode simulasi…");
+    document.getElementById("apiKey").value="";
+    btn.disabled=false;spin.style.display="none";bt.textContent="⚡ GENERATE SIGNAL";
+    document.getElementById("liveDot").className="dot";document.getElementById("liveTxt").textContent="idle";
+    return;
+  }
+  btn.disabled=false;spin.style.display="none";bt.textContent="⚡ GENERATE SIGNAL";
+  document.getElementById("liveDot").className="dot live";document.getElementById("liveTxt").textContent="done";
+}
+
+let lastSignal=null;
+function render(R){
+  const dg=(n)=>R.cfg.digits;
+  const f=(x)=>x.toFixed(R.cfg.digits);
+  document.getElementById("result").style.display="block";
+  document.getElementById("resPair").textContent=R.cfg.sym;
+  const badge=document.getElementById("dataBadge");
+  badge.textContent=R.data.live?"● LIVE DATA":"● MODE SIMULASI";
+  badge.className="badge "+(R.data.live?"live":"sim");
+
+  // verdict
+  const v=document.getElementById("verdict");
+  const vd=document.getElementById("vDir"),vs=document.getElementById("vSub");
+  if(R.action==="BUY"||R.action==="SELL"){
+    v.className="verdict "+(R.action==="BUY"?"buy":"sell");
+    vd.textContent=(R.action==="BUY"?"🟢 BUY ":"🔴 SELL ")+R.cfg.sym;
+    vs.textContent="Sinyal KUAT — semua konfluensi utama terpenuhi.";
+  }else if(R.action==="WATCH"){
+    v.className="verdict wait";vd.textContent="👀 WATCHLIST — "+R.dir;
+    vs.textContent="Setup sedang terbentuk. Tunggu candle konfirmasi sebelum entry.";
+  }else{
+    v.className="verdict wait";vd.textContent="⏸️ NO TRADE";
+    vs.textContent="Konfluensi belum cukup / market ranging. Sabar = modal aman.";
+  }
+  document.getElementById("confTxt").textContent=R.confidence+"%";
+  setTimeout(()=>document.getElementById("confFill").style.width=R.confidence+"%",60);
+
+  // session
+  const s=nextSession(R.cfg.id);
+  document.getElementById("sessName").textContent=s.active?("🟢 SEDANG AKTIF — "+s.label):("Sesi terbaik berikutnya: "+s.label);
+  document.getElementById("sessTime").textContent=(s.active?"Window jam ":"Buka sekitar jam ")+fmtHour(s.from)+"–"+fmtHour(s.to)+" WIB"+(s.active?" · waktunya cari entry":` · ~${Math.round(s.diff)} jam lagi`);
+
+  // levels
+  const L=document.getElementById("levels");
+  L.innerHTML="";
+  const rows=[["Entry","tEntry",R.entry],["Stop Loss","tSL",R.sl],["Take Profit 1 (RR 1:2)","tTP1",R.tp1],["Take Profit 2 (RR 1:4)","tTP2",R.tp2]];
+  rows.forEach(([nm,cl,val])=>{
+    const d=document.createElement("div");d.className="lvl "+cl;
+    d.innerHTML=`<span class="name"><span class="tag"></span>${nm}</span><span class="price">${f(val)}</span>`;
+    L.appendChild(d);
+  });
+
+  // stats
+  let lotTxt = R.lots>=0.01? R.lots.toFixed(2)+" lot" : (R.lots*100).toFixed(2)+" lot (mikro)";
+  document.getElementById("sLot").textContent=lotTxt;
+  document.getElementById("sRR").textContent="1 : 2 → 1 : 4";
+  document.getElementById("sRisk").textContent="$"+R.riskAmt.toFixed(2)+" ("+R.riskPct+"%)";
+  document.getElementById("sProfit").textContent="+$"+R.profit.toFixed(2)+" @TP1";
+
+  // warnings
+  const w=document.getElementById("warnArea");w.innerHTML="";
+  const msgs=[];
+  if(R.lots<0.01)msgs.push("Lot ideal ("+R.lots.toFixed(4)+") di bawah minimum broker standar (0.01). Untuk modal $"+R.capital+" gunakan <b>akun Cent/Micro</b> agar risk "+R.riskPct+"% bisa dipatuhi.");
+  if(!R.data.live)msgs.push("Kamu dalam <b>Mode Simulasi</b> (data sintetis). Masukkan Twelve Data API key (gratis) di ⚙️ untuk harga & analisa <b>real-time</b>.");
+  msgs.push("Hindari entry 30 menit sebelum/sesudah news high-impact. Cek kalender: ForexFactory / Investing.com.");
+  if(msgs.length){const b=document.createElement("div");b.className="warnbox";b.innerHTML="⚠️ "+msgs.join("<br>⚠️ ");w.appendChild(b);}
+
+  // checklist
+  const cl=document.getElementById("checklist");cl.innerHTML="";
+  R.checks.forEach(c=>{
+    const li=document.createElement("li");
+    const cls=c.ok?"ok":(c.mid?"mid":"no");const ic=c.ok?"✓":(c.mid?"~":"✕");
+    li.innerHTML=`<span class="ic ${cls}">${ic}</span><span class="txt">${c.k}<small>${c.note||""}</small></span>`;
+    cl.appendChild(li);
+  });
+
+  // bias panel
+  const setStat=(id,label,val,tone)=>{const e=document.getElementById(id);e.className="stat "+(tone||"");e.querySelector(".v").textContent=val;};
+  setStat("biasD","",R.bD.dir,R.bD.dir==="BULLISH"?"buy":R.bD.dir==="BEARISH"?"sell":"");
+  setStat("biasH4","",R.bH.dir,R.bH.dir==="BULLISH"?"buy":R.bH.dir==="BEARISH"?"sell":"");
+  setStat("adxBox","",R.adxV.toFixed(1)+(R.adxV>=20?" · trending":" · ranging"),R.adxV>=20?"buy":"warn");
+  setStat("atrBox","",R.A.toFixed(R.cfg.digits),"info");
+  document.getElementById("engineNote").textContent=R.data.live?"Data real-time dari Twelve Data. Sinyal dihitung dari candle D1/H4/M15 terbaru.":"Mode simulasi: data sintetis untuk demonstrasi mesin analisa. Tambahkan API key untuk data nyata.";
+
+  // copy text
+  lastSignal=`SKYTRADE SIGNAL — ${R.cfg.sym}\nAksi: ${R.action} | Bias: ${R.dir} | Confidence: ${R.confidence}%\nEntry: ${f(R.entry)}\nSL: ${f(R.sl)}\nTP1: ${f(R.tp1)} (1:2)\nTP2: ${f(R.tp2)} (1:4)\nLot: ${lotTxt} | Risk: $${R.riskAmt.toFixed(2)} (${R.riskPct}%)\nSesi: ${s.label} (${fmtHour(s.from)}-${fmtHour(s.to)} WIB)\n(${R.data.live?"LIVE":"SIMULASI"}) — bukan nasihat keuangan`;
+
+  (function(){
+    var last=R.data.m15[R.data.m15.length-1];
+    var price=last.close.toFixed(R.cfg.digits);
+    var nowWIB=new Date().toLocaleString("id-ID",{timeZone:"Asia/Jakarta",hour:"2-digit",minute:"2-digit",second:"2-digit"});
+    var candleTxt;
+    if(R.data.live && typeof last.time==="string"){
+      var d=new Date(last.time.replace(" ","T")+"Z");
+      candleTxt=d.toLocaleString("id-ID",{timeZone:"Asia/Jakarta",day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})+" WIB";
+    } else { candleTxt="mode simulasi (data sintetis)"; }
+    document.getElementById("freshBox").innerHTML=
+      "<span class='chip price'>\ud83d\udcb2 Harga terkini: <b>"+price+"</b></span>"+
+      "<span class='chip'>\ud83d\udd6f\ufe0f Candle M15 terakhir: <b>"+candleTxt+"</b></span>"+
+      "<span class='chip'>\u23f1\ufe0f Diperbarui: <b>"+nowWIB+" WIB</b></span>"+
+      "<span class='chip'>"+(R.data.live?"\ud83d\udfe2 <b>LIVE</b>":"\ud83d\udfe1 <b>SIMULASI</b>")+"</span>";
+  })();
+  lastR=R;
+  drawChart(R);
+  document.getElementById("explain").innerHTML=buildExplain(R);
+  document.getElementById("result").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+var lastR=null;
+window.addEventListener("resize",function(){if(lastR)drawChart(lastR);});
+function drawChart(R){
+  var cv=document.getElementById("chart");var wrap=cv.parentElement;
+  var dpr=window.devicePixelRatio||1;var W=wrap.clientWidth,H=wrap.clientHeight;
+  cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+"px";cv.style.height=H+"px";
+  var ctx=cv.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+  var candles=R.data.m15.slice(-50);
+  var lo=Infinity,hi=-Infinity;
+  candles.forEach(function(c){lo=Math.min(lo,c.low);hi=Math.max(hi,c.high);});
+  [R.entry,R.sl,R.tp1,R.tp2].forEach(function(v){lo=Math.min(lo,v);hi=Math.max(hi,v);});
+  var pad=hi-lo;lo-=pad*0.05;hi+=pad*0.05;
+  var padR=72,padT=10,padB=8,padL=8;
+  var plotW=W-padR-padL,plotH=H-padT-padB;
+  function x(i){return padL+(i/(candles.length-1))*plotW;}
+  function y(pr){return padT+(hi-pr)/((hi-lo)||1)*plotH;}
+  ctx.font="10px sans-serif";ctx.textAlign="left";
+  for(var g=0;g<=4;g++){var py=padT+plotH*g/4;var prc=hi-(hi-lo)*g/4;ctx.strokeStyle="rgba(255,255,255,.05)";ctx.beginPath();ctx.moveTo(padL,py);ctx.lineTo(padL+plotW,py);ctx.stroke();ctx.fillStyle="#64748b";ctx.fillText(prc.toFixed(R.cfg.digits),padL+plotW+6,py+3);}
+  if(R.setup&&R.setup.ob){var yt=y(R.setup.ob.top),yb=y(R.setup.ob.bottom);ctx.fillStyle=R.dir==="BULLISH"?"rgba(22,199,132,.13)":"rgba(246,70,93,.13)";ctx.fillRect(padL,Math.min(yt,yb),plotW,Math.abs(yb-yt)||2);ctx.fillStyle="#94a3b8";ctx.fillText("OB",padL+4,Math.min(yt,yb)+11);}
+  var cw=Math.max(2,plotW/candles.length*0.62);
+  candles.forEach(function(c,i){var cx=x(i);var up=c.close>=c.open;ctx.strokeStyle=up?"#16c784":"#f6465d";ctx.fillStyle=up?"#16c784":"#f6465d";ctx.beginPath();ctx.moveTo(cx,y(c.high));ctx.lineTo(cx,y(c.low));ctx.stroke();var ot=y(c.open),ct=y(c.close);ctx.fillRect(cx-cw/2,Math.min(ot,ct),cw,Math.max(1,Math.abs(ct-ot)));});
+  function line(pr,color,label,dash){ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1;ctx.setLineDash(dash||[]);ctx.beginPath();ctx.moveTo(padL,y(pr));ctx.lineTo(padL+plotW,y(pr));ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=color;ctx.fillRect(padL+plotW,y(pr)-7,padR,14);ctx.fillStyle="#0b0f1a";ctx.font="bold 9px sans-serif";ctx.fillText(label+" "+pr.toFixed(R.cfg.digits),padL+plotW+3,y(pr)+3);ctx.restore();}
+  if(R.dir!=="NEUTRAL"){line(R.entry,"#3b82f6","ENT",[4,3]);line(R.sl,"#f6465d","SL",[]);line(R.tp1,"#16c784","TP1",[]);line(R.tp2,"#0fae6e","TP2",[4,3]);}
+}
+function buildExplain(R){
+  var f=function(x){return x.toFixed(R.cfg.digits);};
+  var s=nextSession(R.cfg.id);
+  var dirWord=R.dir==="BULLISH"?"NAIK (bullish)":R.dir==="BEARISH"?"TURUN (bearish)":"NETRAL";
+  var decision;
+  if(R.action==="BUY"||R.action==="SELL"){decision="Mesin memutuskan <span class='em'>"+R.action+" "+R.cfg.sym+"</span> karena <span class='em'>"+R.confidence+"%</span> konfluensi terpenuhi: bias D1 &amp; H4 sejalan "+dirWord+", market trending, dan ada Order Block + (FVG / Liquidity Sweep) + candle konfirmasi searah. Kategori <span class='em'>sinyal KUAT</span> sesuai aturan entry hitam-putih kamu.";}
+  else if(R.action==="WATCH"){decision="Mesin menaruh "+R.cfg.sym+" di <span class='em'>WATCHLIST</span> (belum entry). Arah bias sudah "+dirWord+" dan Order Block sudah ada, tapi belum semua konfirmasi terkumpul (confidence "+R.confidence+"%). Tunggu candle konfirmasi M15 sebelum eksekusi.";}
+  else{decision="Mesin memutuskan <span class='em'>NO TRADE</span>. Penyebabnya: bias D1 &amp; H4 tidak sejalan, ATAU market ranging (ADX rendah), ATAU setup belum valid. Prinsip: lebih baik lewatkan peluang daripada entry di kondisi buruk.";}
+  var h="";
+  h+="<h4>① Ringkasan Keputusan</h4><p>"+decision+"</p>";
+  h+="<h4>② Langkah 1 — Bias Higher Timeframe</h4><p>Bias <span class='em'>Daily = "+R.bD.dir+"</span> dan <span class='em'>H4 = "+R.bH.dir+"</span>, dihitung dari posisi harga terhadap EMA20/EMA50 dan struktur swing (higher-high/higher-low). "+((R.bD.dir===R.bH.dir&&R.dir!=="NEUTRAL")?("Keduanya sejalan → arah trading dikunci ke "+dirWord+"."):"Keduanya belum sejalan → ini menurunkan confidence dan sering berakhir NO TRADE.")+"</p>";
+  h+="<h4>③ Langkah 2 — Kondisi Market (Filter ADX)</h4><span class='mono'>ADX M15 = "+R.adxV.toFixed(1)+"  ·  ADX H4 = "+R.adxH4.toFixed(1)+"  ·  ATR = "+f(R.A)+"</span><p>"+((R.adxV>=20||R.adxH4>=22)?"ADX ≥ 20 → market <span class='em'>trending</span>, layak dicari setup.":"ADX &lt; 20 → market <span class='em'>ranging</span>; aturan kamu melarang entry di sini untuk hindari false signal.")+" ATR dipakai menghitung buffer Stop Loss.</p>";
+  h+="<h4>④ Langkah 3 — Setup Smart Money</h4><ul>";
+  h+="<li><span class='em'>Order Block:</span> "+((R.setup&&R.setup.ob)?("ditemukan di zona "+f(R.setup.ob.bottom)+" – "+f(R.setup.ob.top)+" (jejak order institusi sebelum displacement)."):"belum ada OB valid.")+"</li>";
+  h+="<li><span class='em'>Fair Value Gap (FVG):</span> "+((R.setup&&R.setup.fvg)?"ada imbalance searah bias → jadi magnet harga.":"tidak ada FVG searah.")+"</li>";
+  h+="<li><span class='em'>Liquidity Sweep:</span> "+((R.setup&&R.setup.sweep)?"terjadi — likuiditas (SL ritel) disapu lalu harga berbalik.":"belum ada sweep.")+"</li>";
+  h+="<li><span class='em'>Confirmation candle M15:</span> "+((R.setup&&R.setup.conf)?"valid (candle searah bias).":"belum muncul.")+"</li></ul>";
+  h+="<h4>⑤ Langkah 4 — Kenapa Level-nya Di Situ</h4><p><span class='em'>Entry "+f(R.entry)+"</span>: di "+((R.setup&&R.setup.ob)?"batas Order Block (titik harga institusi diperkirakan masuk lagi).":"harga pasar terkini karena OB spesifik belum terbentuk.")+"<br><span class='em'>SL "+f(R.sl)+"</span>: di luar Order Block + buffer ATR — bila tembus, struktur invalid, lebih baik keluar.<br><span class='em'>TP1 "+f(R.tp1)+"</span> = RR 1:2, <span class='em'>TP2 "+f(R.tp2)+"</span> = RR 1:4 (partial close / trailing setelah TP1).</p>";
+  h+="<h4>⑥ Langkah 5 — Perhitungan Lot</h4><span class='mono'>Risiko = $"+R.capital+" × "+R.riskPct+"% = $"+R.riskAmt.toFixed(2)+"\nJarak SL ≈ "+R.slPips.toFixed(1)+" pips\nLot = Risiko ÷ (SL pips × nilai pip/lot $"+R.cfg.pipUSDperLot+") = "+(R.lots>=0.01?(R.lots.toFixed(2)+" lot"):(R.lots.toFixed(4)+" lot → di bawah min 0.01, pakai akun Cent/Micro"))+"</span>";
+  h+="<h4>⑦ Langkah 6 — Waktu &amp; Sesi</h4><p>"+(s.active?("Sekarang <span class='em'>sedang dalam "+s.label+"</span> ("+fmtHour(s.from)+"–"+fmtHour(s.to)+" WIB) — likuiditas tinggi, waktu ideal cari entry "+R.cfg.sym+"."):("Sesi terbaik berikutnya untuk "+R.cfg.sym+" = <span class='em'>"+s.label+"</span> sekitar "+fmtHour(s.from)+"–"+fmtHour(s.to)+" WIB (~"+Math.round(s.diff)+" jam lagi). Di luar sesi ini hindari entry: spread lebar &amp; gerak acak."))+"</p>";
+  h+="<h4>⚠️ Catatan Risiko</h4><p>"+(R.data.live?"Analisa memakai <span class='em'>data real-time</span> Twelve Data.":"Saat ini <span class='em'>Mode Simulasi</span> — angka hanya demonstrasi.")+" Hindari entry 30 menit sebelum/sesudah news high-impact. Patuhi max daily risk 2% &amp; weekly 5-6%. Jangan averaging/martingale.</p>";
+  return h;
+}
+
+document.getElementById("genBtn").onclick=generate;
+document.getElementById("reBtn").onclick=generate;
+document.getElementById("copyBtn").onclick=()=>{if(lastSignal){navigator.clipboard.writeText(lastSignal).then(()=>{const b=document.getElementById("copyBtn");b.textContent="✓ Tersalin!";setTimeout(()=>b.textContent="📋 Salin Sinyal",1500);});}};
+document.getElementById("sendBtn").onclick=sendToBackend;
+function sendToBackend(){
+  if(!lastR){alert("Generate sinyal dulu sebelum mengirim.");return;}
+  var url="https://jfx-backend-production.up.railway.app/signal";
+  var key=(window.__JFX_KEY || "");
+  var R=lastR;
+  var rr=Math.abs(R.entry-R.sl)>0?+(Math.abs(R.tp2-R.entry)/Math.abs(R.entry-R.sl)).toFixed(2):null;
+  var payload={pair:R.cfg.sym,verdict:R.action,confidence:R.confidence,entry:R.entry,sl:R.sl,tp1:R.tp1,tp2:R.tp2,lot:R.lots,rr:rr,riskPct:R.riskPct,capital:R.capital,live:!!R.data.live,ts:new Date().toISOString()};
+  var b=document.getElementById("sendBtn");var old="📡 Kirim ke Backend";b.textContent="⏳ Mengirim...";b.disabled=true;
+  fetch(url,{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key},body:JSON.stringify(payload)})
+    .then(function(r){return r.json().catch(function(){return {};}).then(function(j){return {ok:r.ok,j:j};});})
+    .then(function(res){ b.textContent=res.ok?("✓ Terkirim #"+(res.j.id||"")):("✗ Gagal: "+(res.j.error||"cek URL/Key")); })
+    .catch(function(){ b.textContent="✗ Error jaringan/CORS"; })
+    .finally(function(){ setTimeout(function(){b.textContent=old;b.disabled=false;},2600); });
+}
+</script>
+<!-- ====== FASE 2: PANEL KONEKSI BROKER (MetaApi) ====== -->
+<script>
+(function(){
+  return; // Panel "Koneksi Broker (Read-Only)" lama dinonaktifkan — Saldo & Equity kini via Sign In + widget di home.
+  // Ambil Backend URL & Key dari field yang SUDAH ADA di app (⚙️ Pengaturan)
+  function be(){
+    var url=(document.getElementById("beUrl")&&document.getElementById("beUrl").value||"").trim();
+    var key=(document.getElementById("beKey")&&document.getElementById("beKey").value||"").trim();
+    if(url && !/^https?:\/\//i.test(url)) url="https://"+url;
+    url=url.replace(/\/+$/,"");
+    return {url:url, key:key};
+  }
+
+  // Buat kartu broker, sisipkan tepat sebelum hasil sinyal
+  var card=document.createElement("section");
+  card.className="card fade";
+  card.innerHTML=
+    '<h2 style="display:flex;justify-content:space-between;align-items:center">'+
+      '<span>🔗 Koneksi Broker (Read-Only)</span>'+
+      '<span class="badge" id="brokerBadge">● not connected</span>'+
+    '</h2>'+
+    '<div class="grid2">'+
+      '<div class="stat info"><div class="k">Balance</div><div class="v" id="bBal">–</div></div>'+
+      '<div class="stat buy"><div class="k">Equity</div><div class="v" id="bEq">–</div></div>'+
+      '<div class="stat warn"><div class="k">Free Margin</div><div class="v" id="bFree">–</div></div>'+
+      '<div class="stat"><div class="k">Posisi Terbuka</div><div class="v" id="bPos">–</div></div>'+
+    '</div>'+
+    '<div class="actions" style="grid-template-columns:1fr 1fr">'+
+      '<button class="btn2" id="brokerConnect">🔌 Connect & Check Account</button>'+
+      '<button class="btn2" id="brokerStop">⏹️ Putus (hemat biaya)</button>'+
+    '</div>'+
+    '<p class="hint" id="brokerMsg">Enter Backend URL & API Key in ⚙️ Settings first, then click Connect. The first connection can take 10–60 seconds.</p>';
+
+  function mount(){
+    var wrap=document.querySelector(".wrap");
+    var result=document.getElementById("result");
+    if(wrap && result){ wrap.insertBefore(card, result); }
+    else if(wrap){ wrap.appendChild(card); }
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",mount); else mount();
+
+  var heartbeat=null;
+  function setBadge(txt,cls){ var b=document.getElementById("brokerBadge"); b.textContent="● "+txt; b.className="badge "+(cls||""); }
+
+  async function api(path,method){
+    var c=be();
+    if(!c.url) throw new Error("Backend URL kosong (isi di ⚙️ Pengaturan)");
+    var r=await fetch(c.url+path,{method:method||"GET",headers:{"x-api-key":c.key}});
+    var j=await r.json().catch(function(){return {};});
+    if(!r.ok || j.ok===false) throw new Error(j.error||("HTTP "+r.status));
+    return j;
+  }
+
+  async function connect(){
+    var btn=document.getElementById("brokerConnect");
+    btn.disabled=true; setBadge("menyambungkan…","sim");
+    document.getElementById("brokerMsg").textContent="Manasin mesin broker… sabar 10–60 detik (jangan di-spam klik).";
+    try{
+      var d=await api("/account","GET");   // /account otomatis deploy + connect
+      var a=d.account||{};
+      document.getElementById("bBal").textContent = (a.balance!=null? a.currency+" "+a.balance : "–");
+      document.getElementById("bEq").textContent  = (a.equity!=null? a.currency+" "+a.equity : "–");
+      document.getElementById("bFree").textContent= (a.freeMargin!=null? a.currency+" "+a.freeMargin : "–");
+      document.getElementById("bPos").textContent = (d.count!=null? d.count : "–");
+      setBadge("tersambung "+(a.server||""),"live");
+      document.getElementById("brokerMsg").textContent="✅ Live dari "+(a.broker||"broker")+" · leverage 1:"+(a.leverage||"?")+" · update "+new Date().toLocaleTimeString("id-ID")+" WIB.";
+      if(heartbeat) clearInterval(heartbeat);
+      heartbeat=setInterval(function(){ api("/session/start","POST").catch(function(){}); }, 4*60*1000); // jaga sesi tetap hidup
+    }catch(e){
+      setBadge("gagal","sim");
+      document.getElementById("brokerMsg").textContent="❌ "+e.message;
+    }finally{ btn.disabled=false; }
+  }
+
+  async function stop(){
+    if(heartbeat){ clearInterval(heartbeat); heartbeat=null; }
+    setBadge("memutus…","sim");
+    try{ await api("/session/stop","POST"); setBadge("terputus",""); document.getElementById("brokerMsg").textContent="⏹️ Broker diputus. Tagihan MetaApi berhenti."; }
+    catch(e){ document.getElementById("brokerMsg").textContent="⚠️ "+e.message; }
+  }
+
+  document.addEventListener("click",function(ev){
+    if(ev.target && ev.target.id==="brokerConnect") connect();
+    if(ev.target && ev.target.id==="brokerStop") stop();
+  });
+
+  // App ditutup -> coba putus sesi otomatis (hemat biaya)
+  window.addEventListener("beforeunload",function(){
+    var c=be(); if(!c.url) return;
+    try{ fetch(c.url+"/session/stop",{method:"POST",headers:{"x-api-key":c.key},keepalive:true}); }catch(e){}
+  });
+})();
+</script>
+<!-- ===== PANEL EKSEKUSI ORDER (Fase 3) ===== -->
+<style>
+#jfx-fab{position:fixed;bottom:22px;right:22px;z-index:99999;border:1px solid #2a3a66;cursor:pointer;
+background:linear-gradient(135deg,#0e1a33,#16233f);color:#fff;font-weight:800;font-size:14px;letter-spacing:1.5px;
+padding:10px 16px;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.5);
+display:none;align-items:center;gap:9px;transition:transform .15s,box-shadow .15s;font-family:inherit}
+#jfx-fab svg{display:block}
+#jfx-fab:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(124,58,237,.6)}
+#jfx-panel{position:fixed;bottom:22px;right:22px;z-index:100000;width:340px;display:none;
+background:#11132a;border:1px solid #2a2d52;border-radius:18px;overflow:hidden;
+box-shadow:0 20px 50px rgba(0,0,0,.55);font-family:inherit;color:#e7e9ff}
+#jfx-panel.open{display:block;animation:jfxIn .18s ease}
+@keyframes jfxIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.jfx-head{background:linear-gradient(135deg,#7c3aed,#3b82f6);padding:16px 18px;display:flex;
+align-items:center;justify-content:space-between}
+.jfx-head b{font-size:16px}
+.jfx-head small{display:block;opacity:.85;font-size:11px;margin-top:2px}
+.jfx-x{background:rgba(255,255,255,.18);border:none;color:#fff;width:28px;height:28px;
+border-radius:8px;cursor:pointer;font-size:16px;line-height:1}
+.jfx-body{padding:16px 18px}
+.jfx-mode{display:flex;background:#0b0d20;border-radius:10px;padding:4px;margin-bottom:10px}
+.jfx-mode button{flex:1;border:none;background:none;color:#8b8fb5;font-weight:600;font-size:13px;
+padding:8px;border-radius:7px;cursor:pointer}
+.jfx-mode button.active{background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff}
+.jfx-mode button:disabled{opacity:.45;cursor:not-allowed}
+.jfx-hint{font-size:11px;color:#7c80a8;margin:-2px 0 12px;line-height:1.4}
+.jfx-row{display:flex;gap:10px;margin-bottom:14px}
+.jfx-field{flex:1}
+.jfx-field label{font-size:11px;color:#8b8fb5;display:block;margin-bottom:4px}
+.jfx-field input{width:100%;box-sizing:border-box;background:#0b0d20;border:1px solid #2a2d52;
+color:#fff;border-radius:9px;padding:9px 10px;font-size:14px;font-family:inherit}
+.jfx-acts{display:flex;gap:10px;margin-bottom:14px}
+.jfx-acts button{flex:1;border:none;color:#fff;font-weight:700;font-size:15px;padding:13px;
+border-radius:11px;cursor:pointer;transition:transform .12s,filter .12s}
+.jfx-acts button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.jfx-buy{background:linear-gradient(135deg,#16a34a,#22c55e)}
+.jfx-sell{background:linear-gradient(135deg,#dc2626,#ef4444)}
+.jfx-pos-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.jfx-pos-head span{font-size:12px;color:#8b8fb5;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.jfx-refresh{background:#0b0d20;border:1px solid #2a2d52;color:#a9adff;border-radius:8px;
+padding:5px 10px;cursor:pointer;font-size:12px}
+#jfx-pos{max-height:190px;overflow:auto;font-size:13px}
+.jfx-card{background:#0b0d20;border:1px solid #23264a;border-radius:10px;padding:10px;margin-bottom:8px}
+.jfx-card .sym{font-weight:700}
+.jfx-card .pl-up{color:#22c55e}.jfx-card .pl-dn{color:#ef4444}
+.jfx-close{background:#2a2d52;border:none;color:#fff;border-radius:7px;padding:5px 10px;cursor:pointer;font-size:12px;float:right}
+.jfx-empty{color:#6b6f99;text-align:center;padding:14px 0}
+</style>
+
+<button id="jfx-fab" onclick="jfxToggle(true)" aria-label="Trade"><svg width="30" height="22" viewBox="0 0 56 40" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="7" y1="6" x2="7" y2="34" stroke="#3b82f6" stroke-width="2"/><rect x="3" y="12" width="8" height="15" rx="1.5" fill="#3b82f6"/><line x1="21" y1="10" x2="21" y2="37" stroke="#ef4444" stroke-width="2"/><rect x="17" y="16" width="8" height="14" rx="1.5" fill="#ef4444"/><line x1="35" y1="3" x2="35" y2="29" stroke="#3b82f6" stroke-width="2"/><rect x="31" y="8" width="8" height="16" rx="1.5" fill="#3b82f6"/><line x1="49" y1="9" x2="49" y2="35" stroke="#ef4444" stroke-width="2"/><rect x="45" y="14" width="8" height="13" rx="1.5" fill="#ef4444"/></svg><span>TRADE</span></button>
+
+<div id="jfx-panel">
+  <div class="jfx-head">
+    <div><b>📊 Posisi Terbuka</b><small>Mode DEMO · TradingPro</small></div>
+    <button class="jfx-x" onclick="jfxToggle(false)">×</button>
+  </div>
+  <div class="jfx-body">
+    <div class="jfx-pos-head">
+      <span>Posisi Terbuka</span>
+      <button class="jfx-refresh" onclick="jfxRefreshPos()">🔄 Refresh</button>
+    </div>
+    <div id="jfx-pos"><div class="jfx-empty">Click Refresh to load.</div></div>
+  </div>
+</div>
+
+<script>
+const JFX_BACKEND = 'https://jfx-backend-production.up.railway.app';
+let JFX_KEY = (window.__JFX_KEY || '');
+function jfxToggle(open){
+  document.getElementById('jfx-panel').classList.toggle('open', open);
+  document.getElementById('jfx-fab').style.display = open ? 'none' : 'flex';
+  if(open) jfxRefreshPos();
+}
+async function jfxRefreshPos(){
+  const box = document.getElementById('jfx-pos');
+  box.innerHTML = '<div class="jfx-empty">Loading…</div>';
+  try{
+    const r = await fetch(JFX_BACKEND + '/positions',{headers:{'x-api-key':JFX_KEY}});
+    const d = await r.json();
+    if(!d.ok) throw new Error(d.error);
+    if(!d.count){ box.innerHTML = '<div class="jfx-empty">No open positions.</div>'; return; }
+    box.innerHTML = d.positions.map(function(p){
+      const isBuy = String(p.type).includes('BUY');
+      const pl = Number(p.profit||0);
+      return '<div class="jfx-card">'
+        + '<button class="jfx-close" onclick="jfxClose(\''+p.id+'\')">Close</button>'
+        + '<span class="sym">'+p.symbol+'</span> ' + (isBuy?'🟢 BUY':'🔴 SELL') + ' ' + p.volume
+        + '<br><small>@ '+p.openPrice+' · P/L: <b class="'+(pl>=0?'pl-up':'pl-dn')+'">'+pl.toFixed(2)+'</b></small>'
+        + '</div>';
+    }).join('');
+  }catch(e){ box.innerHTML = '<div class="jfx-empty">❌ ' + e.message + '</div>'; }
+}
+
+async function jfxClose(id){
+  if(!confirm('Tutup posisi ' + id + '?')) return;
+  try{
+    const r = await fetch(JFX_BACKEND + '/order/close',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':JFX_KEY},
+      body:JSON.stringify({positionId:id})
+    });
+    const d = await r.json();
+    if(!d.ok) throw new Error(d.error);
+    alert('✅ Posisi ditutup'); jfxRefreshPos();
+  }catch(e){ alert('❌ Gagal: ' + e.message); }
+}
+</script>
+<!-- ============================================================ -->
+<!-- FASE 4 · TAHAP B — LAYAR UTAMA 2 TOMBOL + LAYAR AUTO TRADE   -->
+<!-- Cukup paste blok ini sebelum </body>. App lama tidak diubah. -->
+<!-- ============================================================ -->
+<style>
+  #jfxHome,#jfxAuto{position:fixed;inset:0;z-index:9999;background:
+    radial-gradient(1200px 600px at 80% -10%,rgba(124,92,255,.18),transparent),
+    radial-gradient(900px 500px at -10% 10%,rgba(34,211,238,.10),transparent),#0b0f1a;
+    color:#e8edf7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  #jfxHome{display:none;overflow:hidden;background:#04060d}
+  .jfx-home-stage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);aspect-ratio:16/9;width:min(100vw,177.78vh);background:url('bg-home.png') center center/100% 100% no-repeat}
+  .jfx-home-val{position:absolute;transform:translate(-50%,-50%);width:9.5%;text-align:center;color:#eafff1;font-weight:800;font-size:clamp(8px,1.6vw,15px);text-shadow:0 0 10px rgba(40,255,140,.5);pointer-events:none;white-space:nowrap;overflow:hidden}
+  .jfx-home-val.bal{left:44.8%;top:51%}
+  .jfx-home-val.eq{left:54.4%;top:51%}
+  .jfx-home-risk{position:absolute;transform:translate(-50%,-50%);top:61.8%;width:4.8%;height:6.5%;border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s ease}
+  .jfx-home-risk.r1{left:42%}
+  .jfx-home-risk.r2{left:47%}
+  .jfx-home-risk.r3{left:52%}
+  .jfx-home-risk.r4{left:57%}
+  .jfx-home-risk:hover{box-shadow:0 0 22px 5px rgba(40,255,140,.45)}
+  .jfx-home-risk:active{transform:translate(-50%,-50%) scale(.93)}
+  .jfx-home-risk.active{box-shadow:0 0 26px 7px rgba(40,255,140,.8);border:2px solid rgba(140,255,190,.95);background:rgba(40,255,140,.14)}
+  .jfx-home-hot{position:absolute;transform:translate(-50%,-50%);cursor:pointer;border-radius:16px;-webkit-tap-highlight-color:transparent;transition:transform .12s ease,box-shadow .2s ease}
+  .jfx-home-hot.start{left:49.9%;top:70.75%;width:22%;height:9%}
+  .jfx-home-hot.start:hover{box-shadow:0 0 40px 10px rgba(40,255,140,.5)}
+  .jfx-home-hot.start.locked{cursor:not-allowed;opacity:.5;filter:grayscale(.55)}
+  .jfx-home-hot.logout{left:49.6%;top:80.5%;width:11%;height:5%}
+  .jfx-home-hot.logout:hover{box-shadow:0 0 26px 6px rgba(255,80,80,.45)}
+  .jfx-home-hot:active{transform:translate(-50%,-50%) scale(.96)}
+  .jfx-home-status{position:absolute;left:49.7%;top:87.3%;transform:translate(-50%,-50%);width:24%;height:5.2%;display:flex;align-items:center;justify-content:center;text-align:center;color:#aef5cf;font-size:clamp(12px,1.45vw,20px);font-weight:700;line-height:1.2;overflow:hidden;padding:0 1%;box-sizing:border-box}
+  .jfx-hero{width:100%;max-width:600px;border-radius:20px;display:block;margin:0 auto 20px;
+    box-shadow:0 24px 70px rgba(0,0,0,.55),0 0 60px rgba(34,211,238,.12)}
+  .jfx-home-inner{width:100%;display:flex;flex-direction:column;align-items:center;padding:0}
+  .jfx-glass{width:100%;max-width:600px;background:rgba(15,20,35,.5);border:1px solid rgba(124,180,255,.18);
+    border-radius:22px;padding:22px 20px 20px;backdrop-filter:blur(18px) saturate(140%);
+    -webkit-backdrop-filter:blur(18px) saturate(140%);box-shadow:0 20px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.07)}
+  .jfx-glass-h{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9fd0ff;margin-bottom:16px;text-align:center;opacity:.9}
+  #jfxAuto{display:none;overflow-y:auto;padding:22px}
+  .jfx-logo{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,#7c5cff,#22d3ee);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:34px;margin-bottom:18px;
+    box-shadow:0 12px 40px rgba(124,92,255,.45)}
+  .jfx-title{font-size:24px;font-weight:800;letter-spacing:.3px}
+  .jfx-sub{font-size:13px;color:#94a3b8;margin-top:6px;margin-bottom:34px}
+  .jfx-menu{display:flex;flex-direction:row;gap:12px;width:100%}
+  .jfx-big{flex:1;cursor:pointer;border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:18px 12px;font-size:16px;font-weight:800;
+    color:#fff;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .18s,box-shadow .18s,filter .18s;box-shadow:0 10px 30px rgba(0,0,0,.4);position:relative;overflow:hidden}
+  .jfx-big:not(.locked):hover{transform:translateY(-3px)}
+  .jfx-manual:not(.locked):hover{box-shadow:0 16px 42px rgba(34,211,238,.45)}
+  .jfx-autobtn:not(.locked):hover{box-shadow:0 16px 42px rgba(168,85,247,.45)}
+  .jfx-big.locked{opacity:.45;filter:grayscale(.4)}
+  .jfx-big small{font-size:12px;font-weight:600;opacity:.85}
+  .jfx-big:active{transform:translateY(2px)}
+  .jfx-manual{background:linear-gradient(135deg,#3b82f6,#22d3ee)}
+  .jfx-autobtn{background:linear-gradient(135deg,#7c5cff,#a855f7)}
+  .jfx-foot{margin-top:30px;font-size:11px;color:#64748b}
+  #jfxMenuBtn{display:none;position:fixed;left:14px;bottom:14px;z-index:9000;align-items:center;gap:6px;
+    background:#161d2e;border:1px solid #27314a;color:#e8edf7;border-radius:999px;padding:10px 16px;
+    font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+  .jfx-wrap{max-width:560px;margin:0 auto}
+  .jfx-back{background:none;border:none;color:#22d3ee;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:14px}
+  .jfx-card{background:linear-gradient(180deg,#161d2e,#121826);border:1px solid #27314a;border-radius:16px;
+    padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.35);margin-bottom:16px}
+  .jfx-h{font-size:22px;font-weight:800;margin-bottom:4px}
+  .jfx-status{border-radius:14px;padding:22px;text-align:center;font-size:22px;font-weight:800;border:1px solid #27314a;margin-bottom:8px}
+  .jfx-status.on{background:rgba(22,199,132,.15);border-color:rgba(22,199,132,.5);color:#16c784}
+  .jfx-status.off{background:rgba(246,70,93,.12);border-color:rgba(246,70,93,.4);color:#f6465d}
+  .jfx-status.kill{background:rgba(240,185,11,.14);border-color:rgba(240,185,11,.5);color:#f0b90b}
+  .jfx-since{font-size:11px;color:#64748b;text-align:center;margin-bottom:6px}
+  .jfx-ctrl{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+  .jfx-b{border:none;border-radius:13px;padding:16px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;transition:.15s}
+  .jfx-b:active{transform:translateY(1px)}
+  .jfx-b:disabled{opacity:.6;cursor:not-allowed}
+  .jfx-on{background:linear-gradient(135deg,#16c784,#0fae6e)}
+  .jfx-off{background:linear-gradient(135deg,#64748b,#475569)}
+  .jfx-kill{background:linear-gradient(135deg,#f6465d,#dc2626);grid-column:1 / -1;padding:20px;font-size:17px}
+  .jfx-reset{background:linear-gradient(135deg,#f0b90b,#d97706);grid-column:1 / -1}
+  .jfx-note{font-size:12px;color:#94a3b8;line-height:1.6;margin-top:14px}
+  .jfx-risk{width:100%;margin-top:18px;padding-top:16px;border-top:1px solid rgba(124,180,255,.16);text-align:left}
+  .jfx-risk .rt{font-size:14px;font-weight:700;display:flex;gap:8px;align-items:center}
+  .jfx-risk .rt span{font-size:11px;font-weight:600;color:#9aa3bd}
+  .jfx-risk select{width:100%;margin-top:12px;padding:12px 14px;background:#0b0f1a;color:#e8ecf8;border:1px solid #2a3350;border-radius:11px;font-size:15px;outline:none;cursor:pointer}
+  .jfx-week{margin-top:10px;font-size:12px;color:#9aa3bd}
+  .jfx-week b{color:#22d3ee}
+  .jfx-lock{margin-top:10px;font-size:12px;color:#ffb4b4;text-align:center}
+  .jfx-ok{margin-top:10px;font-size:12px;color:#9affc4;text-align:center;display:none}
+  #jfxIntro{position:fixed;inset:0;z-index:11000;background:#000 url('bg-preintro.jpg') center center/cover no-repeat;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease}
+  #jfxIntro.hide{opacity:0;pointer-events:none}
+  #jfxIntro video{width:100%;height:100%;object-fit:cover;background:url('bg-preintro.jpg') center center/cover no-repeat;opacity:0;transition:opacity .25s ease}
+  #jfxIntro video.jfx-video-on{opacity:1}
+  #jfxIntroTap{position:absolute;inset:0;cursor:pointer;z-index:2;overflow:hidden;background:#04060d}
+  #jfxIntroTap.hide{display:none}
+  /* panggung 16:9 yg selalu nge-cover layar (HP kepotong samping, tombol tengah tetap aman) */
+  .jfx-pre-stage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);aspect-ratio:16/9;width:max(100vw,177.78vh);background:url('bg-preintro.jpg') center center/100% 100% no-repeat}
+  /* cincin glow di atas tombol merah bawaan background (cuma visual; klik ditangani #jfxIntroTap) */
+  .jfx-pre-glow{position:absolute;left:49%;top:49%;transform:translate(-50%,-50%);width:13%;aspect-ratio:1/1;border-radius:50%;pointer-events:none;background:transparent;box-shadow:none;transition:transform .12s ease}
+  #jfxIntroTap:active .jfx-pre-glow{transform:translate(-50%,-50%) scale(.9)}
+  .jfx-pre-hint{position:absolute;left:0;right:0;bottom:6%;text-align:center;font-size:13px;font-weight:600;letter-spacing:.2em;color:#ffdada;text-shadow:0 0 12px rgba(255,45,45,.75);animation:jfxHintBlink 1.9s ease-in-out infinite;z-index:3;pointer-events:none}
+  @keyframes jfxStartPulse{0%,100%{box-shadow:0 0 18px 4px rgba(255,45,45,.32)}50%{box-shadow:0 0 48px 14px rgba(255,85,85,.82)}}
+  @keyframes jfxHintBlink{0%,100%{opacity:.4}50%{opacity:1}}
+  /* ===== ONBOARDING SCREENS ===== */
+  #jfxConnect{position:fixed;inset:0;z-index:10000;display:none;overflow:hidden;background:#04060d}
+  .jfx-conn-stage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);aspect-ratio:16/9;width:max(100vw,177.78vh);background:url('bg-connect.png') center center/100% 100% no-repeat}
+  .jfx-conn-input{position:absolute;left:52.5%;transform:translate(-50%,-50%);width:19%;height:6.5%;box-sizing:border-box;background:transparent;border:none;outline:none;color:#d9ffe6;font-size:clamp(9px,2vw,14px);font-weight:600;letter-spacing:.3px;text-align:left;padding:0 2%;text-shadow:0 0 7px rgba(57,255,138,.5);caret-color:#39ff8a;-webkit-tap-highlight-color:transparent}
+  .jfx-conn-input::placeholder{color:rgba(120,200,150,.40)}
+  .jfx-conn-input:focus{background:transparent;box-shadow:none;text-shadow:0 0 10px rgba(57,255,138,.75)}
+  .jfx-conn-input.cn-id{top:50.7%}
+  .jfx-conn-input.cn-pass{top:58.75%}
+  .jfx-conn-input.cn-server{top:66.65%}
+  .jfx-conn-input.cn-license{top:74.6%;text-align:left;letter-spacing:.6px;text-transform:uppercase}
+  #jfxConnect #cnStatus{position:absolute;left:50%;top:84%;transform:translate(-50%,-50%);width:74%;text-align:center;z-index:6;font-size:clamp(11px,1.15vw,17px);line-height:1.35}
+  .jfx-license-admin #cnLicense{display:none}
+  .jfx-license-admin #jfxConnect #cnStatus{top:71%}
+  .jfx-mini-link{position:absolute;left:50%;transform:translateX(-50%);top:79%;z-index:7;color:#aefad0;font-size:clamp(10px,1vw,15px);font-weight:700;text-decoration:underline;cursor:pointer;text-shadow:0 0 9px rgba(57,255,138,.45)}
+  .jfx-license-admin .jfx-mini-link{display:none}
+  #jfxSignupModal{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;background:rgba(2,6,18,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:18px;box-sizing:border-box}
+  #jfxSignupModal.show{display:flex}
+  .jfx-signup-card{width:min(92vw,420px);border:1px solid rgba(57,255,138,.28);border-radius:18px;background:linear-gradient(180deg,rgba(12,22,35,.96),rgba(4,9,18,.96));box-shadow:0 24px 90px rgba(0,0,0,.65),0 0 28px rgba(57,255,138,.12);padding:20px;color:#eafff2;font-family:Arial,sans-serif}
+  .jfx-signup-card h3{margin:0 0 6px;font-size:21px}
+  .jfx-signup-card p{margin:0 0 14px;color:#9adbb7;font-size:13px;line-height:1.45}
+  .jfx-signup-card input{width:100%;box-sizing:border-box;margin:7px 0;padding:12px 13px;border-radius:11px;border:1px solid rgba(154,219,183,.22);background:#07111f;color:#eafff2;font-size:15px;outline:none}
+  .jfx-signup-card input:focus{border-color:#39ff8a;box-shadow:0 0 0 3px rgba(57,255,138,.12)}
+  .jfx-signup-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .jfx-signup-actions button{border:0;border-radius:11px;padding:12px;font-weight:800;cursor:pointer}
+  #jfxIbModal{position:fixed;inset:0;z-index:12050;display:none;align-items:center;justify-content:center;background:rgba(2,6,18,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:18px;box-sizing:border-box}
+  #jfxIbModal.show{display:flex}
+  .jfx-ib-code{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 4px;padding:14px 16px;border-radius:12px;border:1px solid rgba(57,255,138,.35);background:#07111f}
+  .jfx-ib-code b{font-size:26px;letter-spacing:3px;color:#39ff8a;font-family:'Courier New',monospace}
+  .jfx-ib-copy{border:0;border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer;background:#39ff8a;color:#04210f}
+  .jfx-ib-go{width:100%;border:0;border-radius:11px;padding:13px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,#39ff8a,#16c46a);color:#04210f;margin-top:12px;font-size:15px}
+  .jfx-ib-close{width:100%;border:1px solid rgba(154,219,183,.3);border-radius:11px;padding:11px;font-weight:700;cursor:pointer;background:transparent;color:#9adbb7;margin-top:8px}
+  #sgSubmit{background:linear-gradient(135deg,#39ff8a,#12c971);color:#03140a}
+  #sgClose{background:rgba(255,255,255,.08);color:#eafff2;border:1px solid rgba(255,255,255,.14)}
+  #sgMsg{min-height:18px;margin-top:10px;font-size:13px;color:#aefad0;line-height:1.4}
+  .jfx-conn-hot{position:absolute;transform:translate(-50%,-50%);cursor:pointer;border-radius:14px;-webkit-tap-highlight-color:transparent;transition:transform .12s ease,box-shadow .2s ease}
+  .jfx-conn-hot.connect{left:50%;top:89%;width:24%;height:8%}
+  .jfx-conn-hot.back{left:51%;top:98.2%;width:24%;height:3.4%}
+  .jfx-conn-hot.connect:hover{box-shadow:0 0 16px 1px rgba(64,170,255,.5)}
+  .jfx-conn-hot.back:hover{box-shadow:0 0 14px 1px rgba(40,255,140,.4)}
+  .jfx-conn-hot:active{transform:translate(-50%,-50%) scale(.95)}
+  /* ===== AUTH (Sign Up / Login): bg full-bleed + hotspot di atas tombol bawaan ===== */
+  #jfxAuth{position:fixed;inset:0;z-index:10000;display:none;overflow:hidden;background:#04060d}
+  .jfx-auth-stage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);aspect-ratio:16/9;width:max(100vw,177.78vh);background:url('bg-auth.jpg') center center/100% 100% no-repeat}
+  .jfx-auth-hot{position:absolute;left:50%;transform:translate(-50%,-50%);width:19.8%;height:16%;border-radius:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s ease}
+  .jfx-auth-hot.signup{top:53%}
+  .jfx-auth-hot.login{top:73%}
+  .jfx-auth-hot:active{transform:translate(-50%,-50%) scale(.95)}
+  .jfx-auth-hot.signup:hover{box-shadow:0 0 30px 7px rgba(255,60,60,.45)}
+  .jfx-auth-hot.login:hover{box-shadow:0 0 30px 7px rgba(60,255,120,.45)}
+  /* Mobile portrait: assets are 16:9, so use COVER. */
+  @media (max-aspect-ratio: 3/4){
+    #jfxIntro video{width:100vw;height:100dvh;min-height:100vh;object-fit:cover}
+    .jfx-pre-hint{bottom:5.8%;font-size:clamp(11px,3.2vw,15px);letter-spacing:.16em}
+    .jfx-conn-input{font-size:clamp(9px,2.4vw,13px)}
+    #jfxConnect #cnStatus{font-size:clamp(10px,3vw,14px);width:82%}
+    .jfx-mini-link{font-size:clamp(10px,3vw,14px);width:90%;text-align:center}
+    .jfx-home-val{font-size:clamp(10px,3vw,14px)}
+    .jfx-home-status{font-size:clamp(12px,3.2vw,18px)}
+  }
+  /* Wide / landscape (desktop): CONTAIN to show full artwork. */
+  @media (min-aspect-ratio: 16/9){
+    .jfx-pre-stage,.jfx-conn-stage,.jfx-auth-stage,.jfx-home-stage,.jfx-end-stage{width:min(100vw,177.78vh)}
+    #jfxIntro video{width:auto;height:100dvh;max-height:100vh;object-fit:contain}
+  }
+  /* Remove hover-glow artifacts on touch */
+  @media (hover:none){
+    .jfx-auth-hot:hover,.jfx-conn-hot:hover,.jfx-home-hot:hover,.jfx-home-risk:hover,.jfx-end-hot:hover,
+    .jfx-auth-hot.signup:hover,.jfx-auth-hot.login:hover{box-shadow:none!important;background:transparent!important;outline:none!important}
+  }
+  .jfx-card{width:100%;max-width:430px;background:rgba(15,20,35,.55);border:1px solid rgba(124,180,255,.18);border-radius:20px;padding:26px 22px;backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .jfx-card .logo{font-size:12px;font-weight:800;letter-spacing:2px;color:#9fd0ff;text-transform:uppercase;margin-bottom:14px;overflow-wrap:anywhere}
+  .jfx-card h2{overflow-wrap:anywhere}
+  .jfx-card p.sub{overflow-wrap:anywhere}
+  .jfx-card h2{margin:0 0 6px;font-size:21px;color:#eaf2ff}
+  .jfx-card p.sub{margin:0 0 18px;font-size:13px;color:#9fb3d0;line-height:1.55}
+  .jfx-field{text-align:left;margin-bottom:13px}
+  .jfx-field label{display:block;font-size:12px;color:#9fb3d0;margin-bottom:5px;font-weight:600}
+  .jfx-field input,.jfx-field select{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.25);color:#eaf2ff;font-size:14px;outline:none}
+  .jfx-field input:focus,.jfx-field select:focus{border-color:rgba(124,196,255,.6)}
+  .jfx-btn{display:block;width:100%;box-sizing:border-box;cursor:pointer;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;margin-top:10px;color:#04122b;background:linear-gradient(135deg,#7cc4ff,#46e0c0)}
+  .jfx-btn.ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);color:#cfe}
+  .jfx-btn:active{transform:translateY(2px)}
+  .jfx-link{display:inline-block;margin-top:15px;color:#7cc4ff;font-size:13px;cursor:pointer;text-decoration:underline;background:none;border:none}
+  .jfx-note{font-size:12px;color:#9fb3d0;margin-top:14px;line-height:1.55;overflow-wrap:anywhere}
+  .jfx-acc{margin-top:14px;text-align:left;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:4px 14px}
+  .jfx-acc .row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .jfx-acc .row:last-child{border-bottom:none}
+  .jfx-acc .row span{color:#9fb3d0;flex:0 0 auto}
+  .jfx-acc .row b{color:#eaf2ff;overflow-wrap:anywhere;text-align:right}
+  .jfx-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:30px;font-size:13px;font-weight:700;margin:4px 0}
+  .jfx-pill.off{background:rgba(255,92,92,.12);color:#ff8a8a;border:1px solid rgba(255,92,92,.3)}
+  .jfx-pill.on{background:rgba(22,199,132,.12);color:#46e0c0;border:1px solid rgba(22,199,132,.3)}
+  #jfxRiskModal{position:fixed;inset:0;z-index:10500;background:rgba(3,6,15,.8);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:20px}
+  #jfxRiskModal.show{display:flex}
+  .jfx-spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:jfxspin .7s linear infinite;vertical-align:-2px}
+  @keyframes jfxspin{to{transform:rotate(360deg)}}
+  /* ===== UI4 · DASHBOARD AUTO (bg-ending.png) ===== */
+  #jfxUI4{position:fixed;inset:0;z-index:9999;display:none;overflow:hidden;background:#04060d;color:#dffaee;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+  .jfx-end-stage{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);aspect-ratio:9/16;width:max(100vw,56.25vh);background:url('bg-ending.png') center center/100% 100% no-repeat}
+  .jfx-end-screen{position:absolute;left:50%;top:49.5%;transform:translate(-50%,-50%);width:70%;height:41%;display:flex;flex-direction:column;gap:.7vh;box-sizing:border-box;padding:.6vh .7vw;overflow:hidden;text-shadow:0 0 6px rgba(40,255,150,.3)}
+  .es-top{display:flex;justify-content:space-between;align-items:center;gap:.4vw}
+  .es-mode{font-weight:800;font-size:clamp(13px,3vw,22px);color:#7bffc2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .es-mode.frozen{color:#ffd27b}
+  .es-engine{font-weight:800;font-size:clamp(13px,3vw,20px);padding:.1em .6em;border-radius:999px;white-space:nowrap}
+  .es-engine.on{color:#16ffa3;border:1px solid rgba(22,255,163,.55)}
+  .es-engine.off{color:#ff9a9a;border:1px solid rgba(255,138,138,.5)}
+  .es-engine.kill{color:#ffd24d;border:1px solid rgba(255,210,77,.6)}
+  .es-money{display:flex;gap:.6vw}
+  .es-cell{flex:1;background:rgba(2,22,13,.4);border:1px solid rgba(40,255,150,.2);border-radius:.55vw;padding:.4vh .55vw;min-width:0}
+  .es-cell label{display:block;font-size:clamp(11px,2.4vw,15px);color:#8fdcb6;font-weight:600;letter-spacing:.04em}
+  .es-cell b{display:block;font-size:clamp(17px,4.4vw,28px);font-weight:800;color:#eafff5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .es-pl{font-size:clamp(13px,3vw,20px);font-weight:800;color:#bfe9d4}
+  .es-pl.pos{color:#16ffa3}
+  .es-pl.neg{color:#ff7a7a}
+  .es-poshead{display:flex;justify-content:space-between;font-size:clamp(11px,2.4vw,15px);color:#8fdcb6;font-weight:600}
+  .es-poslist{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:.3vh;-webkit-overflow-scrolling:touch}
+  .es-pos{display:flex;justify-content:space-between;gap:.4vw;font-size:clamp(13px,3vw,18px);background:rgba(2,22,13,.35);border-radius:.4vw;padding:.4vh .6vw;white-space:nowrap}
+  .es-pos .sym{font-weight:700;color:#eafff5;overflow:hidden;text-overflow:ellipsis}
+  .es-pos .dir{font-weight:800}
+  .es-pos.buy .dir{color:#16ffa3}
+  .es-pos.sell .dir{color:#ff7a7a}
+  .es-pos .pl.pos{color:#16ffa3}
+  .es-pos .pl.neg{color:#ff7a7a}
+  .es-empty{font-size:clamp(12px,2.8vw,16px);color:#7fae97;text-align:center;padding:.6vh 0}
+  .es-note{font-size:clamp(6px,.66vw,11px);color:#7fae97;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .jfx-end-hot{position:absolute;transform:translate(-50%,-50%);cursor:pointer;border-radius:1vw;-webkit-tap-highlight-color:transparent;transition:transform .12s ease,box-shadow .2s ease}
+  .jfx-end-hot.off{left:41.2%;top:82.3%;width:8%;height:6.8%}
+  .jfx-end-hot.kill{left:49.6%;top:82.3%;width:8%;height:6.8%}
+  .jfx-end-hot.reset{left:57.7%;top:82.3%;width:8%;height:6.8%}
+  .jfx-end-hot.off:hover{box-shadow:0 0 22px 5px rgba(130,150,180,.5)}
+  .jfx-end-hot.kill:hover{box-shadow:0 0 24px 6px rgba(246,70,93,.55)}
+  .jfx-end-hot.reset:hover{box-shadow:0 0 22px 5px rgba(240,185,11,.5)}
+  .jfx-end-hot:active{transform:translate(-50%,-50%) scale(.95)}
+  /* status FX: equalizer/neon — hijau jalan saat analisa, merah diam saat off */
+  .jfx-end-fx{position:absolute;left:49.7%;top:92%;transform:translate(-50%,-50%);width:25%;height:7%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5vh;pointer-events:none}
+  .es-fx-scan{position:relative;width:100%;height:58%;overflow:hidden;border-radius:3px;background:repeating-linear-gradient(90deg,rgba(22,255,163,.14) 0 1px,transparent 1px 7%)}
+  .es-fx-scan .grid{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(22,255,163,.08) 0 1px,transparent 1px 33%)}
+  .es-fx-scan::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(22,255,163,.3)}
+  .es-fx-scan .beam{position:absolute;top:0;bottom:0;left:0;width:13%;background:linear-gradient(90deg,transparent,rgba(22,255,163,.5) 70%,rgba(200,255,230,.95));box-shadow:0 0 14px 3px rgba(22,255,163,.5);animation:esscan 2.1s linear infinite}
+  @keyframes esscan{0%{transform:translateX(-120%)}100%{transform:translateX(780%)}}
+  .es-fx-label{font-size:clamp(11px,2.6vw,16px);font-weight:800;letter-spacing:.12em;color:#7bffc2;text-shadow:0 0 8px rgba(22,255,163,.65);white-space:nowrap;animation:esglow 1.8s ease-in-out infinite}
+  @keyframes esglow{0%,100%{opacity:.72;text-shadow:0 0 5px rgba(22,255,163,.35)}50%{opacity:1;text-shadow:0 0 13px rgba(22,255,163,.95)}}
+  .jfx-end-fx.off .es-fx-scan{display:none}
+  .jfx-end-fx.off .es-fx-label{animation:none;opacity:.92;color:#ff8a8a;text-shadow:0 0 8px rgba(255,90,90,.5)}
+  /* LIVE TRADING: ada posisi real terbuka -> scanning + label jadi BIRU (animasi scan & impuls tetap jalan) */
+  .jfx-end-fx.live .es-fx-scan{background:repeating-linear-gradient(90deg,rgba(80,160,255,.16) 0 1px,transparent 1px 7%)}
+  .jfx-end-fx.live .es-fx-scan .grid{background:repeating-linear-gradient(0deg,rgba(80,160,255,.10) 0 1px,transparent 1px 33%)}
+  .jfx-end-fx.live .es-fx-scan::before{background:rgba(80,160,255,.32)}
+  .jfx-end-fx.live .es-fx-scan .beam{background:linear-gradient(90deg,transparent,rgba(59,130,246,.6) 70%,rgba(200,225,255,.98));box-shadow:0 0 16px 4px rgba(59,130,246,.6)}
+  .jfx-end-fx.live .es-fx-label{color:#8fbcff;text-shadow:0 0 9px rgba(59,130,246,.75);animation:esglowblue 1.8s ease-in-out infinite}
+  @keyframes esglowblue{0%,100%{opacity:.72;text-shadow:0 0 5px rgba(59,130,246,.4)}50%{opacity:1;text-shadow:0 0 14px rgba(80,160,255,.98)}}
+</style>
+
+<!-- LAYAR INTRO: video pembuka (tap-to-start biar suara nyala). Timpa file intro.mp4 (folder sama) untuk ganti. -->
+<style>
+  #jfxChooser{position:fixed;inset:0;z-index:10800;display:none;align-items:center;justify-content:center;background:#04110b url('bg-preintro.jpg') center/cover no-repeat}
+  #jfxChooser:before{content:"";position:absolute;inset:0;background:rgba(2,10,6,.78)}
+  .jfx-ch-card{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:14px;padding:32px;width:min(86vw,360px)}
+  .jfx-ch-title{font:800 34px/1 system-ui,sans-serif;letter-spacing:3px;color:#7CFC00;text-shadow:0 0 18px rgba(124,252,0,.5)}
+  .jfx-ch-sub{font:700 12px system-ui;color:#9adbb7;margin-bottom:6px;letter-spacing:2px}
+  .jfx-ch-btn{width:100%;padding:18px;border:0;border-radius:14px;font:800 17px system-ui;cursor:pointer;color:#04110b;background:linear-gradient(135deg,#7CFC00,#39b54a);box-shadow:0 6px 22px rgba(57,181,74,.35);transition:transform .12s}
+  .jfx-ch-btn:active{transform:scale(.97)}
+  .jfx-ch-btn.admin{background:linear-gradient(135deg,#2b3a33,#1a2620);color:#cfeede;border:1px solid #2f5a45}
+  #jfxAdmin{position:fixed;inset:0;z-index:10900;display:none;background:#06140d;color:#e7fff1}
+  .jfx-adm-wrap{display:flex;flex-direction:column;height:100%;max-width:760px;margin:0 auto}
+  .jfx-adm-head{display:flex;align-items:center;gap:10px;padding:14px 14px 8px}
+  .jfx-adm-back,.jfx-adm-ref{background:#11271b;border:1px solid #244a36;color:#bdf0d4;width:40px;height:40px;border-radius:10px;font-size:18px;cursor:pointer}
+  .jfx-adm-h{flex:1;font:800 18px system-ui;color:#7CFC00}
+  .jfx-adm-trade{background:linear-gradient(135deg,#7CFC00,#39b54a);color:#04110b;border:0;padding:0 14px;height:40px;border-radius:10px;font:800 13px system-ui;cursor:pointer;white-space:nowrap}
+  .jfx-adm-search{margin:0 14px 10px;padding:12px 14px;border-radius:10px;border:1px solid #234a36;background:#0b1f15;color:#e7fff1;font-size:14px;outline:none}
+  .jfx-adm-list{flex:1;overflow:auto;padding:0 14px 24px;display:flex;flex-direction:column;gap:10px}
+  .adm-info{padding:24px;text-align:center;color:#9adbb7;font:600 13px system-ui}
+  .adm-info.err{color:#ff9a9a}
+  .adm-row{background:#0c2016;border:1px solid #1d3a29;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .adm-main{flex:1;min-width:180px}
+  .adm-name{font:700 15px system-ui;color:#eafff4}
+  .adm-meta{font:500 12px system-ui;color:#9adbb7;margin-top:2px}
+  .adm-meta code{background:#06140d;padding:1px 5px;border-radius:5px;color:#7CFC00}
+  .adm-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .adm-b{font:600 11px system-ui;padding:3px 8px;border-radius:20px}
+  .adm-b.ok{background:rgba(57,181,74,.18);color:#7CFC00}
+  .adm-b.no{background:rgba(255,90,90,.15);color:#ff9a9a}
+  .adm-actions{display:flex;flex-direction:column;gap:6px;align-items:stretch;min-width:120px}
+  .adm-btn{padding:8px 10px;border-radius:9px;border:1px solid #2a4a38;background:#11271b;color:#cfeede;font:700 12px system-ui;cursor:pointer}
+  .adm-btn.del{background:#3a1414;border-color:#5a2020;color:#ffb3b3}
+  .adm-btn.live{background:#13301f;border-color:#2f6a45;color:#bdf0d4}
+  .adm-btn:disabled{opacity:.5}
+</style>
+
+<!-- ===== LAYAR PEMILIH (paling depan, setelah intro) ===== -->
+<div id="jfxChooser">
+  <div class="jfx-ch-card">
+    <div class="jfx-ch-title">SKYTRADE</div>
+    <div class="jfx-ch-sub">PILIH MODE</div>
+    <button class="jfx-ch-btn trade" id="jfxGoTrade">📈 Mulai Trading</button>
+    <button class="jfx-ch-btn admin" id="jfxGoAdmin">🛠 Admin Console</button>
+  </div>
+</div>
+
+<!-- ===== ADMIN CONSOLE ===== -->
+<div id="jfxAdmin">
+  <div class="jfx-adm-wrap">
+    <div class="jfx-adm-head">
+      <div class="jfx-adm-h">🛠 Admin Console</div>
+      <button class="jfx-adm-ref" id="jfxAdmLog">📋 Log</button>
+      <button class="jfx-adm-ref" id="jfxAdmRefresh">⟳ Refresh</button>
+      <button class="jfx-adm-trade" id="jfxAdmTrade">📈 Go Trading</button>
+    </div>
+    <input id="jfxAdmSearch" class="jfx-adm-search" type="text" placeholder="Cari nama / nomor / kode…" autocomplete="off">
+    <div class="jfx-adm-list" id="jfxAdmList"></div>
+  </div>
+</div>
+
+<!-- ===== PANEL LOG ROBOT ===== -->
+<style>
+#jfxLog{position:fixed;inset:0;z-index:10900;display:none;background:#050b08;overflow:hidden}
+#jfxLog .jfx-adm-wrap{display:flex;flex-direction:column;height:100%;max-width:900px;margin:0 auto}
+#jfxLog .jfx-adm-head{flex-wrap:wrap}
+.jfx-adm-clr{background:#3a1414;border:1px solid #5a2020;color:#ffb3b3;width:40px;height:40px;border-radius:10px;font-size:16px;cursor:pointer}
+.log-filters{display:flex;gap:6px;align-items:center;padding:0 14px 10px;flex-wrap:wrap}
+.log-fbtn{background:#0b1f15;border:1px solid #234a36;color:#9adbb7;border-radius:8px;padding:6px 12px;font:700 12px system-ui;cursor:pointer}
+.log-fbtn.on{background:#13301f;border-color:#2f6a45;color:#7CFC00}
+.log-list{flex:1;overflow:auto;padding:0 10px 24px;display:flex;flex-direction:column;gap:3px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.log-line{padding:6px 10px;border-radius:7px;background:#0a1610;border-left:3px solid #2f6a45;font-size:12px;line-height:1.45;color:#cfeede;word-break:break-word;white-space:pre-wrap}
+.log-line .lt{color:#6f8f7e;margin-right:6px}
+.log-line .lv{font-weight:700;margin-right:6px;color:#7CFC00}
+.log-line.WARN{border-left-color:#d9a441;background:#171204}
+.log-line.WARN .lv{color:#f0c150}
+.log-line.ERROR{border-left-color:#c0392b;background:#1a0b0b}
+.log-line.ERROR .lv{color:#ff9a9a}
+.log-empty{padding:24px;text-align:center;color:#9adbb7;font:600 13px system-ui}
+.log-empty.err{color:#ff9a9a}
+</style>
+<div id="jfxLog">
+  <div class="jfx-adm-wrap">
+    <div class="jfx-adm-head">
+      <button class="jfx-adm-back" id="jfxLogBack">←</button>
+      <div class="jfx-adm-h">📋 Robot Log</div>
+      <button class="jfx-adm-ref" id="jfxLogRefresh">⟳</button>
+      <button class="jfx-adm-clr" id="jfxLogClear">🗑</button>
+    </div>
+    <div class="log-filters">
+      <button class="log-fbtn on" data-lvl="ALL">Semua</button>
+      <button class="log-fbtn" data-lvl="INFO">INFO</button>
+      <button class="log-fbtn" data-lvl="WARN">WARN</button>
+      <button class="log-fbtn" data-lvl="ERROR">ERROR</button>
+      <label style="display:flex;align-items:center;gap:5px;color:#9adbb7;font:600 12px system-ui;margin-left:auto"><input type="checkbox" id="jfxLogAuto"> auto 15s</label>
+    </div>
+    <div class="log-list" id="jfxLogList"><div class="log-empty">Tekan ⟳ untuk memuat log.</div></div>
+  </div>
+</div>
+
+<div id="jfxIntro">
+  <video id="jfxIntroVid" playsinline preload="auto">
+    <source src="intro.mp4" type="video/mp4">
+  </video>
+  <div id="jfxIntroTap">
+    <div class="jfx-pre-stage">
+      <div class="jfx-pre-glow"></div>
+    </div>
+    <div class="jfx-pre-hint">TEKAN TOMBOL UNTUK MULAI</div>
+  </div>
+</div>
+
+<!-- LAYAR UTAMA: 2 TOMBOL + GERBANG RISK -->
+<div id="jfxHome">
+  <div class="jfx-home-stage">
+    <div class="jfx-home-val bal" id="jfxEqBal">-</div>
+    <div class="jfx-home-val eq" id="jfxEqEq">-</div>
+    <span id="jfxEqStatus" style="display:none">loading</span>
+    <div class="jfx-home-risk r1" data-risk="2" role="button" tabindex="0" aria-label="Daily risk 2.5%"></div>
+    <div class="jfx-home-risk r2" data-risk="5" role="button" tabindex="0" aria-label="Daily risk 5%"></div>
+    <div class="jfx-home-risk r3" data-risk="8" role="button" tabindex="0" aria-label="Daily risk 7.5%"></div>
+    <div class="jfx-home-risk r4" data-risk="10" role="button" tabindex="0" aria-label="Daily risk 10%"></div>
+    <div class="jfx-home-hot start locked" id="jfxBtnAuto" role="button" tabindex="0" aria-label="Start Engine"></div>
+    <div class="jfx-home-hot logout" id="jfxLogout" role="button" tabindex="0" aria-label="Logout"></div>
+    <div class="jfx-home-status" id="jfxHomeStatus"></div>
+  </div>
+</div>
+
+<!-- LAYAR SIGN IN / SIGN UP -->
+<div id="jfxAuth">
+  <div class="jfx-auth-stage">
+    <a class="jfx-auth-hot signup" id="jfxSignupBtn" href="https://secure.tradingpro.com/links/go/8118" target="_blank" rel="noopener" aria-label="Sign Up"></a>
+    <div class="jfx-auth-hot login" id="jfxToConnect" role="button" tabindex="0" aria-label="Login"></div>
+  </div>
+</div>
+
+<!-- LAYAR KONEKSI AKUN = LOGIN (ID + password trading → konek MetaApi → aktif) -->
+<div id="jfxConnect">
+  <div class="jfx-conn-stage">
+    <input id="cnLogin" class="jfx-conn-input cn-id" type="text" inputmode="numeric" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="e.g. 51234567">
+    <input id="cnPass" class="jfx-conn-input cn-pass" type="password" autocomplete="off" placeholder="trading account password">
+    <input id="cnServer" class="jfx-conn-input cn-server" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="e.g. TradingProInternational-Demo">
+    <input id="cnLicense" class="jfx-conn-input cn-license" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ACCESS / LICENSE KEY">
+    <div id="cnStatus"></div>
+    <div class="jfx-conn-hot connect" id="cnSubmit" role="button" tabindex="0" aria-label="Connect & Activate"></div>
+    <div class="jfx-mini-link" id="cnDaftar" role="button" tabindex="0">Don’t have a code? Request access</div>
+    <div class="jfx-conn-hot back" id="cnBack" role="button" tabindex="0" aria-label="Back"></div>
+  </div>
+</div>
+
+<!-- MODAL DAFTAR AKSES / LISENSI -->
+<div id="jfxSignupModal" aria-hidden="true">
+  <div class="jfx-signup-card">
+    <h3>Request SKYTRADE Access</h3>
+    <p>Enter your name and WhatsApp number. After admin approval, your access code will be sent manually via WhatsApp.</p>
+    <input id="sgNama" type="text" autocomplete="name" placeholder="Name">
+    <input id="sgWa" type="tel" autocomplete="tel" placeholder="WhatsApp Number">
+    <div class="jfx-signup-actions">
+      <button id="sgSubmit" type="button">Submit Request</button>
+      <button id="sgClose" type="button">Close</button>
+    </div>
+    <div id="sgMsg"></div>
+  </div>
+</div>
+
+<!-- MODAL KODE IB (cegat sebelum daftar TradingPRO) -->
+<div id="jfxIbModal" aria-hidden="true">
+  <div class="jfx-signup-card">
+    <h3>Activate Your Rebate</h3>
+    <p>When TradingPRO asks for an <b>IB code</b> while creating your trading account, paste the code below. It is marked “optional”, but it must be filled in to activate your rebate benefits.</p>
+    <div class="jfx-ib-code"><b id="jfxIbCode">46077</b><button class="jfx-ib-copy" id="jfxIbCopy" type="button">Copy</button></div>
+    <div id="jfxIbMsg" style="font-size:12px;color:#9adbb7;min-height:14px;margin-top:2px"></div>
+    <button class="jfx-ib-go" id="jfxIbGo" type="button">Continue to TradingPRO →</button>
+    <button class="jfx-ib-close" id="jfxIbCloseBtn" type="button">Cancel</button>
+  </div>
+</div>
+
+<!-- (popup batas rugi dipindah inline ke home, di bawah tombol Manual/Auto) -->
+
+<!-- LAYAR UTAMA 4: DASHBOARD AUTO (live <-> data beku) -->
+<div id="jfxUI4">
+  <div class="jfx-end-stage">
+    <div class="jfx-end-screen">
+      <div class="es-top">
+        <span class="es-mode" id="esMode">loading…</span>
+        <span class="es-engine off" id="esEngine">–</span>
+      </div>
+      <div class="es-money">
+        <div class="es-cell"><label>BALANCE</label><b id="esBal">–</b></div>
+        <div class="es-cell"><label>EQUITY</label><b id="esEq">–</b></div>
+      </div>
+      <div class="es-pl" id="esPl">Floating P/L: –</div>
+      <div class="es-poshead"><span id="esPosCount">0 positions</span><span id="esSince"></span></div>
+      <div class="es-poslist" id="esPosList"><div class="es-empty">loading data…</div></div>
+    </div>
+    <div class="jfx-end-hot off"   id="endOff"   role="button" tabindex="0" aria-label="Turn Off Engine"></div>
+    <div class="jfx-end-hot kill"  id="endKill"  role="button" tabindex="0" aria-label="Kill Switch"></div>
+    <div class="jfx-end-hot reset" id="endReset" role="button" tabindex="0" aria-label="Reset"></div>
+    <div class="jfx-end-fx" id="esFx">
+      <div class="es-fx-scan"><span class="grid"></span><span class="beam"></span></div>
+      <div class="es-fx-label" id="esFxLabel">● ANALYZING MARKET</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOMBOL MELAYANG: balik ke menu -->
+<button id="jfxMenuBtn">🏠 Menu</button>
+
+<!-- LAYAR AUTO TRADE -->
+<div id="jfxAuto">
+  <div class="jfx-wrap">
+    <button class="jfx-back" id="jfxAutoBack">← Back to Menu</button>
+    <div class="jfx-card">
+      <div class="jfx-h">🤖 Auto Trade</div>
+      <div class="jfx-sub" style="margin-bottom:16px">The robot analyzes & opens positions automatically on DEMO. Status is pulled directly from the server.</div>
+      <div class="jfx-status off" id="jfxStatusBox"><span id="jfxStatusText">loading…</span></div>
+      <div class="jfx-since" id="jfxSince"></div>
+      <div class="jfx-ctrl">
+        <button class="jfx-b jfx-on"  id="jfxOn">🟢 Start</button>
+        <button class="jfx-b jfx-off" id="jfxOff">🔴 Stop</button>
+        <button class="jfx-b jfx-kill" id="jfxKill">🚨 EMERGENCY STOP (Kill-switch)</button>
+        <button class="jfx-b jfx-reset" id="jfxReset">🔓 Unlock (Reset)</button>
+      </div>
+      <div class="jfx-note">
+        🟢 <b>Start</b>: the robot begins working.<br>
+        🔴 <b>Stop</b>: the robot stops (normal).<br>
+        🚨 <b>EMERGENCY STOP</b>: stop + lock. The robot can't start until you <b>Reset</b>.<br>
+        🔓 <b>Reset</b>: unlock (the robot stays off until started again).
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // ⬇️ Backend kamu (kalau URL/key berubah, ganti di 2 baris ini saja)
+  var BE  = "https://jfx-backend-production.up.railway.app";
+  var KEY = (window.__JFX_KEY || "");
+  // ADMIN production: this file always uses /admin/connect and does NOT require a license key.
+  // Do NOT publish this admin file as a public end-user link.
+  var IS_MASTER = true;
+  var LIC_KEY = 'jfx_kode_lisensi';
+  document.documentElement.classList.add('jfx-license-admin');
+
+  var home=document.getElementById('jfxHome'),
+      auto=document.getElementById('jfxAuto'),
+      menuBtn=document.getElementById('jfxMenuBtn'),
+      scAuth=document.getElementById('jfxAuth'),
+      scConn=document.getElementById('jfxConnect'),
+      riskModal=document.getElementById('jfxRiskModal'),
+      ui4=document.getElementById('jfxUI4');
+
+  function hideScreens(){ home.style.display='none'; auto.style.display='none'; scAuth.style.display='none'; scConn.style.display='none'; if(ui4)ui4.style.display='none'; menuBtn.style.display='none'; var _f=document.getElementById('jfx-fab'); if(_f)_f.style.display='none'; var _p=document.getElementById('jfx-panel'); if(_p)_p.classList.remove('open'); window.scrollTo(0,0); }
+  function showAuthScreen(){ hideScreens(); scAuth.style.display='flex'; }
+  function showConnectScreen(){ hideScreens(); scConn.style.display='flex'; }
+  function showHome(){ hideScreens(); home.style.display='flex';
+    try{ refreshEquity(); }catch(e){} }
+  function fmtEq(v){ if(v==null||isNaN(v)) return '–'; return Number(v).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function refreshEquity(){
+    var id=''; try{ id=localStorage.getItem('jfx_account')||''; }catch(e){}
+    var st=document.getElementById('jfxEqStatus'), bal=document.getElementById('jfxEqBal'), eq=document.getElementById('jfxEqEq');
+    if(!st||!bal||!eq) return;
+    if(!id){ st.textContent='not connected'; bal.textContent='–'; eq.textContent='–'; return; }
+    st.textContent='loading…';
+    fetch(BE+'/connect/status?accountId='+encodeURIComponent(id),{headers:{'x-api-key':KEY}})
+      .then(function(r){ return r.json().catch(function(){return null;}); })
+      .then(function(j){
+        if(j && j.account){ var a=j.account; bal.textContent=fmtEq(a.balance)+' '+(a.currency||''); eq.textContent=fmtEq(a.equity)+' '+(a.currency||''); st.textContent=(j.status==='connected')?'🟢 live':('⏳ '+(j.status||'connecting')); }
+        else { st.textContent='⏳ connecting'; }
+      })
+      .catch(function(){ st.textContent='⚠️ offline'; });
+  }
+  setInterval(function(){ if(home && home.style.display!=='none') refreshEquity(); }, 30000);
+  function showAuto(){ hideScreens(); auto.style.display='block'; var _f=document.getElementById('jfx-fab'); if(_f)_f.style.display='flex'; refreshStatus(); }
+
+  // ===== UI4 · DASHBOARD AUTO (live <-> data beku, baca /monitor + /account) =====
+  var _ui4Timer=null;
+  function fmtMoney(v,cur){ if(v==null||isNaN(v)) return '\u2013'; return Number(v).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})+(cur?(' '+cur):''); }
+  function dirLabel(t){ return /BUY/i.test(t||'')?'BUY':(/SELL/i.test(t||'')?'SELL':((t||'').replace(/POSITION_TYPE_/,''))); }
+  function ageStr(sec){ if(sec==null) return ''; if(sec<90) return sec+'s'; if(sec<5400) return Math.round(sec/60)+'m'; return Math.round(sec/3600)+'j'; }
+  function renderUI4(mon, live){
+    var mode=document.getElementById('esMode'), eng=document.getElementById('esEngine'),
+        bal=document.getElementById('esBal'), eq=document.getElementById('esEq'),
+        pl=document.getElementById('esPl'), pc=document.getElementById('esPosCount'),
+        since=document.getElementById('esSince'), list=document.getElementById('esPosList'),
+        note=document.getElementById('esNote');
+    if(!mode) return;
+    var on=!!(mon&&mon.engineOn), kill=!!(mon&&mon.killSwitch);
+    if(kill){ eng.className='es-engine kill'; eng.textContent='\ud83d\udea8 LOCKED'; }
+    else if(on){ eng.className='es-engine on'; eng.textContent='\ud83d\udfe2 ON'; }
+    else { eng.className='es-engine off'; eng.textContent='\ud83d\udd34 OFF'; }
+    var acc=null, positions=[], cur='', isLive=false;
+    if(live && live.ok && live.account){ acc=live.account; positions=live.positions||[]; cur=acc.currency||''; isLive=true; }
+    else if(mon && mon.snapshot){ acc=mon.snapshot.account||null; positions=(mon.snapshot.positions)||[]; cur=acc?(acc.currency||''):''; }
+    if(isLive){ mode.className='es-mode'; mode.textContent='\ud83d\udfe2 LIVE'; }
+    else { mode.className='es-mode frozen'; var ag=ageStr(mon&&mon.ageSec); mode.textContent='\u23f8 LAST DATA'+(ag?(' \u00b7 '+ag+' ago'):''); }
+    bal.textContent=acc?fmtMoney(acc.balance,cur):'\u2013';
+    eq.textContent=acc?fmtMoney(acc.equity,cur):'\u2013';
+    var sum=0, have=false;
+    for(var i=0;i<positions.length;i++){ var p=positions[i]; if(p&&p.profit!=null){ sum+=Number(p.profit)||0; have=true; } }
+    pl.className='es-pl'+(have?(sum>=0?' pos':' neg'):'');
+    pl.textContent='Floating P/L: '+(have?((sum>=0?'+':'')+fmtMoney(sum,cur)):'\u2013');
+    pc.textContent=positions.length+' open positions';
+    if(since){ if(mon&&mon.snapshot&&mon.snapshot.updatedAt){ try{ since.textContent='upd '+new Date(mon.snapshot.updatedAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Jakarta'}); }catch(e){ since.textContent=''; } } else since.textContent=''; }
+    if(!positions.length){ list.innerHTML='<div class="es-empty">'+(on?'no open positions yet':'no positions open')+'</div>'; }
+    else { var html='';
+      for(var k=0;k<positions.length;k++){ var q=positions[k]; var d=dirLabel(q.type); var prof=Number(q.profit); var cls=(prof>=0?'pos':'neg');
+        html+='<div class="es-pos '+(/BUY/i.test(d)?'buy':'sell')+'"><span class="sym">'+(q.symbol||'?')+' <span class="dir">'+d+'</span> '+(q.volume!=null?q.volume:'')+'</span><span class="pl '+cls+'">'+(isNaN(prof)?'':((prof>=0?'+':'')+prof.toFixed(2)))+'</span></div>'; }
+      list.innerHTML=html; }
+    var fx=document.getElementById('esFx');
+    if(fx){ var lbl=document.getElementById('esFxLabel');
+      if(kill){ fx.className='jfx-end-fx off'; if(lbl)lbl.textContent='\u25cf TERKUNCI'; }
+      else if(on){
+        if(positions.length>0){ fx.className='jfx-end-fx live'; if(lbl)lbl.textContent='\u25cf LIVE TRADING NOW'; }
+        else { fx.className='jfx-end-fx'; if(lbl)lbl.textContent='\u25cf ANALYZING MARKET'; }
+      }
+      else { fx.className='jfx-end-fx off'; if(lbl)lbl.textContent='\u25cf ENGINE OFF'; }
+    }
+  }
+  function refreshUI4(){
+    api('/monitor').then(function(j){
+      if(!j||!j.ok){ throw new Error('bad'); }
+      renderUI4(j,null);
+      if(j.connected){ api('/account').then(function(a){ if(a&&a.ok) renderUI4(j,a); }).catch(function(){}); }
+    }).catch(function(){ var m=document.getElementById('esMode'); if(m){ m.className='es-mode frozen'; m.textContent='\u26a0\ufe0f failed to reach server'; } });
+  }
+  function buildFx(){ var bars=document.getElementById('esFxBars'); if(!bars||bars.childElementCount) return; for(var i=0;i<22;i++){ var b=document.createElement('span'); b.className='bar'; b.style.animationDelay=(i*0.06).toFixed(2)+'s'; b.style.animationDuration=(0.7+(i%6)*0.1).toFixed(2)+'s'; bars.appendChild(b); } }
+  function showUI4(){ hideScreens(); ui4.style.display='block'; buildFx(); refreshUI4(); if(_ui4Timer) clearInterval(_ui4Timer); _ui4Timer=setInterval(function(){ if(ui4.style.display!=='none') refreshUI4(); else { clearInterval(_ui4Timer); _ui4Timer=null; } }, 8000); }
+  function ui4Act(path, confirmMsg, go){
+    if(confirmMsg && !confirm(confirmMsg)) return;
+    api(path,'POST').then(function(j){ if(j&&j.ok===false&&j.error) alert(j.error); }).catch(function(){ alert('Failed to reach server'); })
+      .finally(function(){ if(go) go(); else refreshUI4(); });
+  }
+  (function wireUI4(){
+    var o=document.getElementById('endOff'), k=document.getElementById('endKill'), r=document.getElementById('endReset');
+    if(o) o.onclick=function(){ ui4Act('/auto/disable', null, showHome); };
+    if(k) k.onclick=function(){ ui4Act('/auto/kill', 'Confirm KILL-SWITCH? Engine off, locked & all pending orders cancelled.', showHome); };
+    if(r) r.onclick=function(){ ui4Act('/auto/reset', null, null); };
+  })();
+  // ===== LAYAR PEMILIH + ADMIN CONSOLE =====
+  var _chooser=document.getElementById('jfxChooser');
+  var _admin=document.getElementById('jfxAdmin');
+  function showChooser(){ if(_chooser){ _chooser.style.display='flex'; } }
+  function hideChooser(){ if(_chooser){ _chooser.style.display='none'; } }
+  function closeAdmin(){ if(_admin){ _admin.style.display='none'; } }
+  function openAdmin(){ if(_admin){ _admin.style.display='block'; loadAdminList(); } }
+  var _adminRows=[];
+  function _admTgl(s){ try{ return new Date(s).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}); }catch(e){ return s||'-'; } }
+  function loadAdminList(){
+    var box=document.getElementById('jfxAdmList');
+    if(box) box.innerHTML='<div class="adm-info">memuat data…</div>';
+    fetch(BE+'/admin/lisensi',{headers:{'x-api-key':KEY}})
+      .then(function(r){return r.json();})
+      .then(function(j){ _adminRows=(j&&j.lisensi)?j.lisensi:[]; renderAdminRows(); })
+      .catch(function(){ if(box) box.innerHTML='<div class="adm-info err">gagal memuat data</div>'; });
+  }
+  function renderAdminRows(){
+    var box=document.getElementById('jfxAdmList'); if(!box) return;
+    var sEl=document.getElementById('jfxAdmSearch'); var q=(sEl?sEl.value:'').trim().toLowerCase();
+    var rows=_adminRows.filter(function(r){ if(!q) return true; return ((r.nama||'')+' '+(r.wa||'')+' '+(r.kode||'')).toLowerCase().indexOf(q)>=0; });
+    if(!rows.length){ box.innerHTML='<div class="adm-info">tidak ada data</div>'; return; }
+    var html='';
+    for(var i=0;i<rows.length;i++){ var r=rows[i];
+      var aktif=r.aktif_sampai && new Date(r.aktif_sampai).getTime()>Date.now();
+      var _sisa=r.aktif_sampai?Math.ceil((new Date(r.aktif_sampai).getTime()-Date.now())/86400000):null;
+      var liveOn=Number(r.live_allowed)===1; var tgOn=!!r.tg_chat_id;
+      html+='<div class="adm-row"><div class="adm-main">'
+        +'<div class="adm-name">'+(r.nama||'(tanpa nama)')+'</div>'
+        +'<div class="adm-meta">'+(r.wa||'-')+' · <code>'+(r.kode||'-')+'</code></div>'
+        +'<div class="adm-badges">'
+        +'<span class="adm-b '+(aktif?'ok':'no')+'">'+(aktif?('Aktif s/d '+_admTgl(r.aktif_sampai)):'Expired')+'</span>'
+        +(aktif&&_sisa!=null?'<span class="adm-b '+(_sisa<=7?'no':'ok')+'">⏳ sisa '+_sisa+' hari</span>':'')
+        +'<span class="adm-b '+(liveOn?'ok':'no')+'">'+(liveOn?'✅ Live-allowed':'⛔ Belum diizinkan')+'</span>'
+        +(tgOn?'<span class="adm-b ok">🔔 TG</span>':'')
+        +'</div></div>'
+        +'<div class="adm-actions">'
+        +'<button class="adm-btn live" data-act="live" data-kode="'+(r.kode||'')+'" data-allow="'+(liveOn?'0':'1')+'">'+(liveOn?'Cabut Live':'Izinkan Live')+'</button>'
+        +'<button class="adm-btn copy" data-act="copy" data-kode="'+(r.kode||'')+'">Copy kode</button>'
+        +'<button class="adm-btn del" data-act="del" data-wa="'+(r.wa||'')+'" data-nama="'+(r.nama||'')+'">🗑 Hapus WA</button>'
+        +'</div></div>';
+    }
+    box.innerHTML=html;
+  }
+  function adminPost(path,payload){ return fetch(BE+path,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':KEY},body:JSON.stringify(payload||{})}).then(function(r){return r.json();}); }
+  (function wireAdmin(){
+    var tradeBtn=document.getElementById('jfxAdmTrade'), openBtn=document.getElementById('jfxGoAdmin'),
+        backBtn=document.getElementById('jfxAdmBack'), refBtn=document.getElementById('jfxAdmRefresh'),
+        search=document.getElementById('jfxAdmSearch'), list=document.getElementById('jfxAdmList');
+    if(tradeBtn) tradeBtn.onclick=function(){ closeAdmin(); try{ bootRoute(); }catch(e){} };
+    if(openBtn) openBtn.onclick=function(){ hideChooser(); openAdmin(); };
+    if(backBtn) backBtn.onclick=function(){ closeAdmin(); showChooser(); };
+    if(refBtn) refBtn.onclick=function(){ loadAdminList(); };
+    if(search) search.oninput=function(){ renderAdminRows(); };
+    if(list) list.onclick=function(ev){
+      var b=ev.target; while(b && b!==list && !b.getAttribute('data-act')) b=b.parentNode;
+      if(!b || b===list) return;
+      var act=b.getAttribute('data-act');
+      if(act==='copy'){ var k=b.getAttribute('data-kode')||''; try{ navigator.clipboard.writeText(k); }catch(e){} var o=b.textContent; b.textContent='Tersalin!'; setTimeout(function(){ b.textContent=o; },1200); return; }
+      if(act==='live'){ var kode=b.getAttribute('data-kode'); var allow=b.getAttribute('data-allow')==='1'; b.disabled=true;
+        adminPost('/admin/allow-live',{kode:kode,allow:allow}).then(function(j){ if(j&&j.ok===false&&j.error)alert(j.error); loadAdminList(); }).catch(function(){ alert('Gagal terhubung ke server'); b.disabled=false; }); return; }
+      if(act==='del'){ var wa=b.getAttribute('data-wa'); var nama=b.getAttribute('data-nama')||'';
+        if(!wa){ alert('Nomor WA kosong, tidak bisa dihapus.'); return; }
+        if(!confirm('Hapus nomor '+wa+(nama?(' ('+nama+')'):'')+'?\n\nLisensi & pendaftaran nomor ini dihapus dari database, dan nomor bisa daftar ulang. Akun di MetaApi TIDAK ikut terhapus.')) return;
+        b.disabled=true; adminPost('/admin/hapus-wa',{wa:wa}).then(function(j){ alert((j&&(j.message||j.error))||'Selesai.'); loadAdminList(); }).catch(function(){ alert('Gagal terhubung ke server'); b.disabled=false; }); return; }
+    };
+  })();
+
+  // ===== PANEL LOG ROBOT =====
+  var _logEl=document.getElementById('jfxLog');
+  var _logLevel='ALL';
+  var _logRows=[];
+  var _logTimer=null;
+  function openLog(){ if(_logEl){ _logEl.style.display='block'; loadLogs(); } }
+  function closeLog(){ if(_logEl){ _logEl.style.display='none'; } if(_logTimer){ clearInterval(_logTimer); _logTimer=null; } var a=document.getElementById('jfxLogAuto'); if(a)a.checked=false; }
+  function _logTime(s){ try{ return new Date(s).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }catch(e){ return s||''; } }
+  function _logEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function loadLogs(){
+    var box=document.getElementById('jfxLogList');
+    if(box && !_logRows.length) box.innerHTML='<div class="log-empty">memuat…</div>';
+    fetch(BE+'/admin/logs?limit=500',{headers:{'x-api-key':KEY}})
+      .then(function(r){return r.json();})
+      .then(function(j){ _logRows=(j&&j.logs)?j.logs:[]; renderLogs(); })
+      .catch(function(){ if(box) box.innerHTML='<div class="log-empty err">gagal memuat log</div>'; });
+  }
+  function renderLogs(){
+    var box=document.getElementById('jfxLogList'); if(!box) return;
+    var rows=_logRows.filter(function(r){ return _logLevel==='ALL' || String(r.level||'INFO').toUpperCase()===_logLevel; });
+    if(!rows.length){ box.innerHTML='<div class="log-empty">tidak ada log'+(_logLevel!=='ALL'?(' level '+_logLevel):'')+'</div>'; return; }
+    var html='';
+    for(var i=rows.length-1;i>=0;i--){ var r=rows[i]; var lv=String(r.level||'INFO').toUpperCase();
+      html+='<div class="log-line '+lv+'"><span class="lt">'+_logTime(r.ts)+'</span><span class="lv">'+lv+'</span>'+_logEsc(r.msg||'')+'</div>';
+    }
+    box.innerHTML=html;
+  }
+  function clearLogs(){
+    if(!confirm('Hapus semua log di server?')) return;
+    fetch(BE+'/admin/logs/clear',{method:'POST',headers:{'x-api-key':KEY}})
+      .then(function(r){return r.json();})
+      .then(function(){ _logRows=[]; renderLogs(); })
+      .catch(function(){ alert('Gagal menghapus log'); });
+  }
+  (function wireLog(){
+    var openB=document.getElementById('jfxAdmLog'), backB=document.getElementById('jfxLogBack'),
+        refB=document.getElementById('jfxLogRefresh'), clrB=document.getElementById('jfxLogClear'),
+        auto=document.getElementById('jfxLogAuto'), filt=document.querySelectorAll('#jfxLog .log-fbtn');
+    if(openB) openB.onclick=openLog;
+    if(backB) backB.onclick=closeLog;
+    if(refB) refB.onclick=loadLogs;
+    if(clrB) clrB.onclick=clearLogs;
+    if(auto) auto.onchange=function(){ if(auto.checked){ _logTimer=setInterval(loadLogs,15000); } else if(_logTimer){ clearInterval(_logTimer); _logTimer=null; } };
+    for(var i=0;i<filt.length;i++){ (function(b){ b.onclick=function(){ _logLevel=b.getAttribute('data-lvl'); for(var k=0;k<filt.length;k++) filt[k].classList.toggle('on',filt[k]===b); renderLogs(); }; })(filt[i]); }
+  })();
+
+  function bootRoute(){
+    // GERBANG LOGIN: device ini WAJIB sudah login (punya sesi lokal) sebelum boleh lihat dashboard.
+    // MOBILE juga wajib punya kode lisensi yang masih valid setiap mau masuk.
+    var acc=''; try{ acc=localStorage.getItem('jfx_account')||''; }catch(e){}
+    if(!acc){ showAuthScreen(); return; }
+    var continueRoute=function(){
+      api('/auto/status').then(function(j){
+        var a=j&&j.auto;
+        if(a && a.enabled){ showUI4(); return; }
+        showHome();
+      }).catch(function(){ showHome(); });
+    };
+    if(IS_MASTER){ continueRoute(); return; }
+    var kode=''; try{ kode=localStorage.getItem(LIC_KEY)||''; }catch(e){}
+    if(!kode){ showAuthScreen(); return; }
+    cekLisensi(kode).then(continueRoute).catch(function(){
+      try{ localStorage.removeItem('jfx_account'); localStorage.removeItem(LIC_KEY); }catch(e){}
+      showAuthScreen();
+    });
+  }
+  function _enableThenWarm(){
+    if(homeStatus) homeStatus.innerHTML='System is starting….';
+    fetch(BE+"/auto/enable",{method:"POST",headers:{"x-api-key":KEY}})
+      .then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); })
+      .then(function(o){
+        if(o.r.status===409 && o.j && /kill/i.test(o.j.error||'')){
+          if(homeStatus) homeStatus.innerHTML='Releasing kill-switch….';
+          return fetch(BE+"/auto/reset",{method:"POST",headers:{"x-api-key":KEY}}).then(function(){ return fetch(BE+"/auto/enable",{method:"POST",headers:{"x-api-key":KEY}}); }).then(function(r2){ return r2.json().then(function(j2){ return {r:r2,j:j2}; }); });
+        }
+        return o;
+      })
+      .then(function(o){
+        var j=(o&&o.j)||o;
+        if(j && j.ok===false){ if(homeStatus) homeStatus.innerHTML=(j.error||'Cannot start engine'); return; }
+        warmThenUI4(0);
+      })
+      .catch(function(e){ if(homeStatus) homeStatus.innerHTML='Connection error — please try again'; });
+  }
+  function warmThenUI4(tries){
+    var MAX=8;
+    if(homeStatus) homeStatus.innerHTML='System is starting….';
+    fetch(BE+'/monitor',{headers:{'x-api-key':KEY}}).then(function(r){return r.json();})
+      .then(function(j){
+        if(j && j.connected){ if(homeStatus) homeStatus.innerHTML='System is starting….'; setTimeout(showUI4,500); return; }
+        if(tries>=MAX){ if(homeStatus) homeStatus.innerHTML='System is starting….'; setTimeout(showUI4,500); return; }
+        setTimeout(function(){ warmThenUI4(tries+1); }, 4000);
+      })
+      .catch(function(){ if(tries>=MAX){ setTimeout(showUI4,300); } else setTimeout(function(){ warmThenUI4(tries+1); }, 4000); });
+  }
+
+  // ===== GERBANG RISK: tombol mode terkunci sampai batas rugi harian dipilih =====
+  var RISK_KEY="jfx_daily_risk";
+  var riskBtns=document.querySelectorAll('.jfx-home-risk'),
+      homeStatus=document.getElementById('jfxHomeStatus'),
+      bA=document.getElementById('jfxBtnAuto');
+  function weeklyPct(d){ return Math.min(d*2.5,25); }
+  function lockModes(lock){
+    bA.classList.toggle('locked',lock);
+  }
+  function highlightRisk(d){
+    for(var i=0;i<riskBtns.length;i++){ riskBtns[i].classList.toggle('active', parseInt(riskBtns[i].getAttribute('data-risk'),10)===d); }
+  }
+  function applyRisk(d){
+    if(!d){ localStorage.removeItem(RISK_KEY); highlightRisk(0); lockModes(true); return; }
+    localStorage.setItem(RISK_KEY,String(d));
+    highlightRisk(d); lockModes(false);
+    if(homeStatus) homeStatus.innerHTML='Simpan risk '+d+'%...';
+    fetch(BE+"/auto/risk-config",{method:"POST",headers:{"x-api-key":KEY,"Content-Type":"application/json"},body:JSON.stringify({dailyLossPct:d})})
+      .then(function(r){ return r.json().then(function(j){ return {r:r,j:j}; }); })
+      .then(function(o){ if(!o.r.ok||!o.j||o.j.ok===false){ throw new Error((o.j&&o.j.error)||("HTTP "+o.r.status)); }
+        var bd=(o.j.risk&&o.j.risk.dailyLossPct!=null)?o.j.risk.dailyLossPct:d;
+        localStorage.setItem(RISK_KEY,String(bd)); highlightRisk(parseInt(bd,10)); lockModes(false);
+        if(homeStatus) homeStatus.innerHTML='Risk '+bd+'% / wk '+weeklyPct(bd)+'% ✓'; })
+      .catch(function(e){ lockModes(true);
+        if(homeStatus) homeStatus.innerHTML='Failed to save risk, choose again'; });
+  }
+  for(var _ri=0;_ri<riskBtns.length;_ri++){ (function(btn){ btn.onclick=function(){ applyRisk(parseInt(btn.getAttribute('data-risk'),10)); }; })(riskBtns[_ri]); }
+  (function initRisk(){ var s=localStorage.getItem(RISK_KEY); var d=s?parseInt(s,10):0; if(d){ highlightRisk(d); lockModes(false); } else { lockModes(true); } })();
+  function guard(fn){ return function(){ if(!localStorage.getItem(RISK_KEY)){ alert("Set your daily risk limit before choosing a trading mode."); return; } fn(); }; }
+  function startEngine(){ _enableThenWarm(); return; /* flow lama (showAuto) dimatikan, diganti UI4 */
+    if(homeStatus) homeStatus.innerHTML='Activating autotrade...';
+    fetch(BE+"/auto/enable",{method:"POST",headers:{"x-api-key":KEY}}).then(function(r){return r.json();})
+      .then(function(j){ if(homeStatus) homeStatus.innerHTML='Autotrade ACTIVE \u2713 robot starting analysis'; })
+      .catch(function(){ if(homeStatus) homeStatus.innerHTML='Engine ON (enable failed, check connection)'; })
+      .finally(function(){ setTimeout(function(){ showAuto(); }, 700); }); }
+  document.getElementById('jfxBtnAuto').onclick=guard(startEngine);
+  menuBtn.onclick=showHome;
+  document.getElementById('jfxAutoBack').onclick=showHome;
+  function logout(){
+    try{ fetch(BE+'/session/stop',{method:'POST',headers:{'x-api-key':KEY},keepalive:true}); }catch(e){}
+    try{ localStorage.removeItem('jfx_account'); localStorage.removeItem('jfx_mt_pending'); localStorage.removeItem(RISK_KEY); if(!IS_MASTER) localStorage.removeItem(LIC_KEY); }catch(e){}
+    var l=document.getElementById('cnLogin'),p=document.getElementById('cnPass'),s=document.getElementById('cnServer'),lic=document.getElementById('cnLicense'),st=document.getElementById('cnStatus');
+    if(l)l.value=''; if(p)p.value=''; if(s)s.value=''; if(lic&&!IS_MASTER)lic.value='';
+    if(st)st.innerHTML='';
+    try{ highlightRisk(0); if(homeStatus) homeStatus.innerHTML=''; }catch(e){}
+    try{ lockModes(true); }catch(e){}
+    showAuthScreen();
+  }
+  document.getElementById('jfxLogout').onclick=logout;
+
+  // ===== ONBOARDING NAV WIRING =====
+  document.getElementById('jfxToConnect').onclick=showConnectScreen;
+  document.getElementById('cnBack').onclick=showAuthScreen;
+  var _licInput=document.getElementById('cnLicense'); try{ if(_licInput) _licInput.value=localStorage.getItem(LIC_KEY)||''; }catch(e){}
+  var cnStatus=document.getElementById('cnStatus');
+  (function wireDaftar(){
+    var open=document.getElementById('cnDaftar'), modal=document.getElementById('jfxSignupModal'), close=document.getElementById('sgClose'), submit=document.getElementById('sgSubmit'), msg=document.getElementById('sgMsg');
+    function show(){ if(modal){ modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); } }
+    function hide(){ if(modal){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); } }
+    if(open) open.onclick=show; if(close) close.onclick=hide;
+    if(submit) submit.onclick=function(){
+      var nama=(document.getElementById('sgNama').value||'').trim(), wa=(document.getElementById('sgWa').value||'').trim();
+      if(!nama||!wa){ msg.textContent='Name and WhatsApp number are required.'; return; }
+      submit.disabled=true; msg.textContent='Submitting request...'
+      fetch(BE+'/daftar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nama:nama,wa:wa})})
+        .then(function(r){ return r.json().catch(function(){return null;}).then(function(j){ return {ok:r.ok,j:j,status:r.status}; }); })
+        .then(function(o){ if(!o.ok||!o.j||o.j.ok===false) throw new Error((o.j&&o.j.error)||('HTTP '+o.status)); msg.textContent='Request received. Please wait for admin approval and your access code via WhatsApp.'; })
+        .catch(function(e){ msg.textContent='Request failed: '+((e&&e.message)||'network'); })
+        .finally(function(){ submit.disabled=false; });
+    };
+  })();
+  (function wireIbModal(){
+    var IB_CODE='46077', IB_LINK='https://secure.tradingpro.com/links/go/8118';
+    var btn=document.getElementById('jfxSignupBtn'), modal=document.getElementById('jfxIbModal'),
+        copy=document.getElementById('jfxIbCopy'), go=document.getElementById('jfxIbGo'),
+        closeBtn=document.getElementById('jfxIbCloseBtn'), msg=document.getElementById('jfxIbMsg'),
+        codeEl=document.getElementById('jfxIbCode');
+    if(codeEl) codeEl.textContent=IB_CODE;
+    function show(){ if(modal){ modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); } }
+    function hide(){ if(modal){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); } }
+    if(btn) btn.addEventListener('click', function(e){ e.preventDefault(); show(); });
+    if(copy) copy.onclick=function(){
+      function done(){ if(msg) msg.textContent='IB code copied — paste it on the TradingPRO IB field.'; }
+      function fallback(){ try{ var t=document.createElement('textarea'); t.value=IB_CODE; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); done(); }catch(_){ if(msg) msg.textContent='Copy manually: '+IB_CODE; } }
+      try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(IB_CODE).then(done, fallback); } else { fallback(); } }
+      catch(e){ fallback(); }
+    };
+    if(go) go.onclick=function(){ window.open(IB_LINK,'_blank','noopener'); hide(); };
+    if(closeBtn) closeBtn.onclick=hide;
+    if(modal) modal.addEventListener('click', function(e){ if(e.target===modal) hide(); });
+  })();
+  document.getElementById('cnSubmit').onclick=connectAccount;
+  function fmtNum(v){ return (v==null||isNaN(v))?'-':Number(v).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function showBalance(a, accountId){
+    try{ localStorage.setItem('jfx_account', accountId||''); }catch(e){}
+    cnStatus.innerHTML='<span class="jfx-pill on">🟢 Terhubung ke MetaApi</span>'
+      +' &nbsp;\u2713 masuk ke app...';
+    try{ localStorage.setItem('jfx_acc_info', JSON.stringify({login:a.login,broker:a.broker,server:a.server,balance:a.balance,equity:a.equity,currency:a.currency})); }catch(e){}
+    setTimeout(function(){ bootRoute(); }, 1300); // routing pintar: engine LIVE -> UI4, selainnya -> home (UI3)
+  }
+  function tryAgainCountdown(n){
+    if(n<=0){ connectAccount(); return; }
+    cnStatus.innerHTML='<span class="jfx-pill off">Try Again in '+n+'</span>';
+    setTimeout(function(){ tryAgainCountdown(n-1); }, 1000);
+  }
+  function pollStatus(accountId, tries){
+    var MAX=45; // ~45 x 4s = 180 detik
+    if(tries>MAX){ cnStatus.innerHTML='<span class="jfx-pill off">❌ Connection failed. Check your ID, password & server. The account could not come online.</span>'; return; }
+    var secs=tries*4;
+    cnStatus.innerHTML='<span class="jfx-pill on"><span class="jfx-spin"></span> Connecting to your MT account... ('+secs+'s)</span><div class="jfx-note">A new account needs ~1-3 min to come online the first time. Please wait, do not close it.</div>';
+    fetch(BE+'/connect/status?accountId='+encodeURIComponent(accountId),{headers:{'x-api-key':KEY}})
+      .then(function(r){ return r.json().catch(function(){ return null; }); })
+      .then(function(j){
+        if(j && j.status==='connected' && j.account){ showBalance(j.account, accountId); return; }
+        if(j && j.status==='error'){ tryAgainCountdown(3); return; }
+        var ex=(j&&(j.state||j.connectionStatus))?(' ['+(j.state||'?')+'/'+(j.connectionStatus||'?')+']'):'';
+        cnStatus.innerHTML='<span class="jfx-pill on"><span class="jfx-spin"></span> Connecting to your MT account... ('+secs+'s)'+ex+'</span><div class="jfx-note">A new account needs ~1-3 min to come online the first time. Please wait, do not close it.</div>';
+        setTimeout(function(){ pollStatus(accountId, tries+1); }, 4000);
+      })
+      .catch(function(){ setTimeout(function(){ pollStatus(accountId, tries+1); }, 4000); });
+  }
+  function normKode(v){ return String(v||'').trim().toUpperCase().replace(/\s+/g,''); }
+  function translateLicenseError(msg){
+    msg=String(msg||'');
+    if(/tidak ditemukan/i.test(msg)) return 'Access code not found.';
+    if(/dicabut/i.test(msg)) return 'This access code has been revoked by admin.';
+    if(/expired|kadaluarsa/i.test(msg)) return 'This access code has expired. Contact admin to extend it.';
+    if(/wajib/i.test(msg)) return 'Access code is required.';
+    return msg;
+  }
+  function cekLisensi(kode){
+    return fetch(BE+'/lisensi/cek',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kode:kode})})
+      .then(function(r){ return r.json().catch(function(){return null;}).then(function(j){ return {ok:r.ok,status:r.status,j:j}; }); })
+      .then(function(o){
+        if(!o.ok || !o.j) throw new Error('Failed to check license (HTTP '+o.status+')');
+        if(!o.j.valid) throw new Error(translateLicenseError(o.j.reason || o.j.error) || 'Invalid access code');
+        try{ localStorage.setItem(LIC_KEY,kode); }catch(e){}
+        return o.j;
+      });
+  }
+  function connectAccount(){
+    var lg=document.getElementById('cnLogin').value.trim(),
+        pw=document.getElementById('cnPass').value.trim(),
+        sv=(document.getElementById('cnServer').value||'').trim(),
+        licEl=document.getElementById('cnLicense'),
+        kode=normKode(licEl?licEl.value:localStorage.getItem(LIC_KEY));
+    if(!lg||!pw||!sv){ cnStatus.innerHTML='<span class="jfx-pill off">⚠️ Enter your ID, password & server first</span>'; return; }
+    if(!IS_MASTER && !kode){ cnStatus.innerHTML='<span class="jfx-pill off">⚠️ Enter your access / license key first</span>'; return; }
+    cnStatus.innerHTML='<span class="jfx-pill on"><span class="jfx-spin"></span> '+(IS_MASTER?'Admin mode:':'Checking license...')+'</span>';
+    var afterLicense = IS_MASTER ? Promise.resolve(null) : cekLisensi(kode);
+    afterLicense.then(function(){
+      cnStatus.innerHTML='<span class="jfx-pill on"><span class="jfx-spin"></span> Registering account to MetaApi...</span>';
+      var payload={login:lg,password:pw,server:sv,platform:'mt4'};
+      var path=IS_MASTER?'/admin/connect':'/connect';
+      if(!IS_MASTER) payload.kodeLisensi=kode;
+      return fetch(BE+path,{method:'POST',headers:{'Content-Type':'application/json','x-api-key':KEY},body:JSON.stringify(payload)});
+    })
+      .then(function(r){ return r.text().then(function(t){ var j=null; try{ j=JSON.parse(t); }catch(e){} return {ok:r.ok,status:r.status,j:j,raw:t}; }); })
+      .then(function(res){
+        if(!res.ok || !res.j || !res.j.accountId){
+          var msg;
+          if(res.j&&res.j.error){ msg=res.j.error; }
+          else { var rw=(res.raw||'').replace(/</g,'&lt;').slice(0,180); msg='Server balas HTTP '+res.status+(rw?(' — '+rw):' (respons kosong)'); }
+          cnStatus.innerHTML='<span class="jfx-pill off">❌ '+msg+'</span>'; return;
+        }
+        pollStatus(res.j.accountId, 0);
+      })
+      .catch(function(err){ cnStatus.innerHTML='<span class="jfx-pill off">⚠️ '+((err&&err.message)||'Could not reach server')+'</span>'; });
+  }
+  var riskConfirm=document.getElementById('jfxRiskConfirm');
+  if(riskConfirm) riskConfirm.onclick=function(){ if(!localStorage.getItem(RISK_KEY)){ alert('Choose your daily risk limit first.'); return; } riskModal.classList.remove('show'); };
+  showAuthScreen();
+
+  // ===== INTRO: video pembuka (tap-to-start biar suara nyala), lanjut ke login saat selesai =====
+  (function intro(){
+    var ov=document.getElementById('jfxIntro');
+    if(typeof IS_MASTER!=='undefined' && IS_MASTER){ if(ov) ov.style.display='none'; try{ openAdmin(); }catch(e){} return; }
+    if(!ov) return;
+    var vid=document.getElementById('jfxIntroVid');
+    var tap=document.getElementById('jfxIntroTap');
+    var done=false, started=false, safety=null;
+    function finish(){ if(done) return; done=true; if(safety) clearTimeout(safety); showChooser(); ov.classList.add('hide'); setTimeout(function(){ ov.style.display='none'; },650); }
+    function start(){
+      if(started||done) return; started=true;
+      if(!vid){ finish(); return; }
+      try{ vid.muted=false; vid.currentTime=0; }catch(e){}
+      function showVideo(){
+        try{ vid.classList.add('jfx-video-on'); }catch(e){}
+        if(tap) tap.classList.add('hide');
+      }
+      vid.addEventListener('playing', showVideo, {once:true});
+      vid.addEventListener('timeupdate', function(){ if(vid.currentTime>0.15) showVideo(); }, {once:true});
+      var p=vid.play&&vid.play();
+      if(p&&p.catch) p.catch(function(){ finish(); });
+      safety=setTimeout(function(){ if(!done && (vid.error || vid.readyState<2 || vid.currentTime<0.1)) finish(); },6500);
+    }
+    if(vid){ vid.addEventListener('ended',finish); vid.addEventListener('error',function(){ if(started) finish(); }); }
+    if(tap){ tap.addEventListener('click',start); } else { start(); }
+  })();
+
+  function api(path,method){
+    return fetch(BE+path,{method:method||'GET',headers:{'x-api-key':KEY}}).then(function(r){return r.json();});
+  }
+  function setUI(a){
+var box=document.getElementById('jfxStatusBox'),
+t=document.getElementById('jfxStatusText'),
+s=document.getElementById('jfxSince');
+if(a.killSwitch){ box.className='jfx-status kill'; t.textContent='🚨 LOCKED'; }
+else if(a.enabled){ box.className='jfx-status on'; t.textContent='🟢 ON'; }
+else { box.className='jfx-status off'; t.textContent='🔴 OFF'; }
+if(a.since){ try{ s.textContent='Last changed: '+new Date(a.since).toLocaleString('id-ID',{timeZone:'Asia/Jakarta'})+' WIB'; }catch(e){} }
+}
+  function refreshStatus(){
+    api('/auto/status').then(function(j){ if(j&&j.auto) setUI(j.auto); })
+      .catch(function(){ document.getElementById('jfxStatusText').textContent='⚠️ Failed to reach server'; });
+  }
+  function act(path,btn){
+    var old=btn.textContent; btn.disabled=true; btn.textContent='⏳...';
+    api(path,'POST').then(function(j){ if(j&&j.auto) setUI(j.auto); if(j&&j.ok===false&&j.error) alert(j.error); })
+      .catch(function(){ alert('Failed to reach server'); })
+      .finally(function(){ btn.disabled=false; btn.textContent=old; });
+  }
+  document.getElementById('jfxOn').onclick=function(){ act('/auto/enable',this); };
+  document.getElementById('jfxOff').onclick=function(){ act('/auto/disable',this); };
+  document.getElementById('jfxKill').onclick=function(){ if(confirm('Confirm ACTIVATE KILL-SWITCH? The engine will be turned off & locked.')) act('/auto/kill',this); };
+  document.getElementById('jfxReset').onclick=function(){ act('/auto/reset',this); };
+
+  // auto-refresh status tiap 5 detik selama layar Auto terbuka
+  setInterval(function(){ if(auto.style.display==='block') refreshStatus(); },5000);
+
+  bootRoute(); // rute awal: engine ON -> UI4, sudah konek -> UI3, baru -> login
+})();
+</script>
+<script>
+(function(){
+  if(window.__JFX_KEY) return; // sudah login (kunci ada di sesi ini)
+  var SALT_B64="X+LpoBB9x+yiDsUK5r4pdg==";
+  var IV_B64="qNvym7M/9vFmX+Sl";
+  var CT_B64="nvyuLATRaitP3ULr0t5pCd7r9M1yDi7a1e0QeL7e1MHYq5SczK5vW1l5qkmqeDmmrDH/xT0aUGHU3qw+yawsvxmdrA8=";
+  var ITER=150000;
+  function b2a(s){var b=atob(s),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+  function build(){
+    if(document.getElementById('jfxLogin'))return;
+    var ov=document.createElement('div');ov.id='jfxLogin';
+    ov.innerHTML='<div class="jfxlg-card"><div class="jfxlg-logo">SK</div><h1>Konsol Admin</h1><p class="sub">Masuk untuk mengelola SKYTRADE</p><input id="jfxlgUser" type="text" autocomplete="username" placeholder="Username" autocapitalize="off" spellcheck="false"><input id="jfxlgPass" type="password" autocomplete="current-password" placeholder="Password"><button id="jfxlgBtn" class="jfxlg-btn">Masuk</button><div id="jfxlgStatus" class="jfxlg-status"></div></div>';
+    document.body.appendChild(ov);
+    var u=document.getElementById('jfxlgUser'),p=document.getElementById('jfxlgPass'),b=document.getElementById('jfxlgBtn'),st=document.getElementById('jfxlgStatus');
+    function fail(m){b.disabled=false;st.className='jfxlg-status err';st.textContent=m||'❌ Username atau password salah.';}
+    async function go(){
+      var uu=(u.value||'').trim(),pp=p.value||'';
+      if(!uu||!pp){fail('Isi username & password dulu.');return;}
+      if(!(window.crypto&&crypto.subtle)){fail('Butuh HTTPS (buka via link https, bukan file lokal).');return;}
+      b.disabled=true;st.className='jfxlg-status';st.textContent='Membuka...';
+      try{
+        var enc=new TextEncoder();
+        var base=await crypto.subtle.importKey('raw',enc.encode(uu+"\n"+pp),'PBKDF2',false,['deriveKey']);
+        var key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b2a(SALT_B64),iterations:ITER,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+        var pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b2a(IV_B64)},key,b2a(CT_B64));
+        var secret=new TextDecoder().decode(pt);
+        if(secret.indexOf('sky_')!==0)throw 0;
+        try{sessionStorage.setItem('jfx_admin_key',secret);}catch(e){}
+        st.className='jfxlg-status ok';st.textContent='✅ Berhasil! Membuka konsol...';
+        setTimeout(function(){location.reload();},400);
+      }catch(e){fail();}
+    }
+    b.onclick=go;
+    p.addEventListener('keydown',function(e){if(e.key==='Enter')go();});
+    u.addEventListener('keydown',function(e){if(e.key==='Enter')p.focus();});
+    setTimeout(function(){try{u.focus();}catch(e){}},120);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);else build();
+})();
+</script>
+</body>
+</html>
